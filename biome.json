@@ -8,7 +8,9 @@
       "!**/dist",
       "!**/data",
       "!**/.turbo",
-      "!**/bun.lock"
+      "!**/bun.lock",
+      "!**/playwright-report",
+      "!**/test-results"
     ]
   },
   "formatter": {
