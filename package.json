@@ -13,6 +13,7 @@
     "format": "biome format --write .",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e",
     "db:migrate": "turbo run db:migrate"
   },
   "devDependencies": {
