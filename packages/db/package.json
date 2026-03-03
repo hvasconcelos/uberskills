@@ -1,0 +1,17 @@
+{
+  "name": "@uberskillz/db",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "db:migrate": "echo 'migrations not yet configured'"
+  },
+  "dependencies": {
+    "@uberskillz/types": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.7"
+  }
+}
