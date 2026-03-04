@@ -7,8 +7,7 @@ import { Suspense } from "react";
 
 import { EmptyState } from "@/components/empty-state";
 import { PageHeader } from "@/components/page-header";
-import { SkillCard } from "@/components/skill-card";
-import { SkillsLibraryControls } from "@/components/skills-library-controls";
+import { SkillsLibraryView } from "@/components/skills-library-view";
 
 // Skills library reads live data -- disable static generation.
 export const dynamic = "force-dynamic";
@@ -20,8 +19,9 @@ interface SkillsPageProps {
 }
 
 /**
- * Skills Library page -- browsable, searchable grid of all skills.
+ * Skills Library page -- browsable, searchable grid/list of all skills.
  * Reads `q` and `status` from URL search params to filter results.
+ * View mode (grid/list) is managed client-side via SkillsLibraryView.
  */
 export default async function SkillsLibraryPage({ searchParams }: SkillsPageProps) {
   const params = await searchParams;
@@ -49,8 +49,9 @@ export default async function SkillsLibraryPage({ searchParams }: SkillsPageProp
         }
       />
 
+      {/* Controls toolbar (search, filter, view toggle) + skills grid/list */}
       <Suspense>
-        <SkillsLibraryControls />
+        <SkillsLibraryView skills={skills} />
       </Suspense>
 
       {hasFilters && skills.length > 0 && (
@@ -81,14 +82,6 @@ export default async function SkillsLibraryPage({ searchParams }: SkillsPageProp
           title={search ? `No skills matching "${search}"` : "No matching skills"}
           description="Try adjusting your search or filters."
         />
-      )}
-
-      {skills.length > 0 && (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {skills.map((skill) => (
-            <SkillCard key={skill.id} skill={skill} />
-          ))}
-        </div>
       )}
     </div>
   );
