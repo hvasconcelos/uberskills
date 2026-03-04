@@ -6,7 +6,58 @@
  * Color tokens defined as CSS custom properties.
  * Light mode on :root, dark mode on .dark class (Tailwind class strategy).
  * Semantic status colors for skill lifecycle states.
+ *
+ * Tailwind v4 @theme block maps CSS vars to utility classes
+ * (e.g. bg-background, text-foreground, border-input).
  */
+
+/* ──────────────────────────────────────────────
+   Tailwind v4 Dark Mode — class-based strategy
+   Enables dark: variant via <html class="dark">
+   ────────────────────────────────────────────── */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ──────────────────────────────────────────────
+   Tailwind v4 Theme — maps CSS vars to utilities
+   ────────────────────────────────────────────── */
+@theme {
+  /* Colors — mapped from CSS custom properties.
+     Enables utilities like bg-background, text-primary, border-input, etc.
+     Using oklch or var() references so Tailwind can generate opacity modifiers. */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-input: var(--input);
+
+  /* Border radius — var(--radius) defined in :root */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Font families — Geist loaded via next/font CSS variables */
+  --font-sans:
+    var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono:
+    var(--font-geist-mono), ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+}
 
 /* ──────────────────────────────────────────────
    Light Mode (Default)
@@ -117,6 +168,55 @@ body {
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* ──────────────────────────────────────────────
+   Typography Scale
+   Utility classes for the design system type ramp.
+   Geist Sans/Mono loaded via next/font variables.
+   ────────────────────────────────────────────── */
+
+/* Page title: 24px bold (e.g. "My Skills") */
+.text-page-title {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+}
+
+/* Section heading: 18px semibold (e.g. card headers) */
+.text-section-heading {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+}
+
+/* Body: 14px regular — default via Tailwind text-sm */
+
+/* Secondary text: 14px muted — use text-sm text-muted-foreground */
+
+/* Code/editor: 13px mono */
+.text-code {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+}
+
+/* Nav items: 14px medium — use text-sm font-medium */
+
+/* ──────────────────────────────────────────────
+   Default Transition
+   Interactive elements use a fast color transition.
+   ────────────────────────────────────────────── */
+a,
+button,
+[role="button"],
+input,
+select,
+textarea,
+[tabindex]:not([tabindex="-1"]) {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }
 
 /* ──────────────────────────────────────────────
