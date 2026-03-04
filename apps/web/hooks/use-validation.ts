@@ -1,7 +1,7 @@
 "use client";
 
-import { validateSkill } from "@uberskillz/skill-engine";
-import type { SkillFrontmatter, ValidationError } from "@uberskillz/types";
+import { validateSkill } from "@uberskills/skill-engine";
+import type { SkillFrontmatter, ValidationError } from "@uberskills/types";
 import { useMemo } from "react";
 
 /** Aggregated validation state for the editor. */

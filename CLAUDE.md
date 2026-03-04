@@ -1,10 +1,10 @@
-# CLAUDE.md -- UberSkillz
+# CLAUDE.md -- UberSkills
 
 > Context file for Claude Code when working on this codebase.
 
 ## Project Overview
 
-UberSkillz is an open-source web application for designing, testing, and deploying Claude Code Agent Skills. It provides a visual editor with AI-assisted creation, a multi-model testing sandbox, and one-click deployment to `~/.claude/skills/`.
+UberSkills is an open-source web application for designing, testing, and deploying Claude Code Agent Skills. It provides a visual editor with AI-assisted creation, a multi-model testing sandbox, and one-click deployment to `~/.claude/skills/`.
 
 The core workflow: **Create** a skill (manually or via AI chat) → **Edit** metadata, instructions, and files → **Test** with streaming AI responses and metrics → **Export** as zip or **Deploy** to the local filesystem.
 
@@ -25,7 +25,7 @@ The core workflow: **Create** a skill (manually or via AI chat) → **Edit** met
 ## Monorepo Structure
 
 ```
-uberskillsz/
+uberskills/
 ├── apps/
 │   └── web/                    # Next.js 15 app (App Router)
 │       ├── app/                # Routes and API handlers
@@ -34,19 +34,19 @@ uberskillsz/
 │       ├── lib/                # Utilities and constants
 │       └── styles/             # Global CSS with design tokens
 ├── packages/
-│   ├── types/                  # @uberskillz/types -- shared TypeScript interfaces
-│   ├── db/                     # @uberskillz/db -- Drizzle schema, queries, crypto
-│   ├── skill-engine/           # @uberskillz/skill-engine -- parser, validator, generator, importer, exporter
-│   └── ui/                     # @uberskillz/ui -- shadcn/ui components
+│   ├── types/                  # @uberskills/types -- shared TypeScript interfaces
+│   ├── db/                     # @uberskills/db -- Drizzle schema, queries, crypto
+│   ├── skill-engine/           # @uberskills/skill-engine -- parser, validator, generator, importer, exporter
+│   └── ui/                     # @uberskills/ui -- shadcn/ui components
 └── specs/                      # Project specifications (read-only reference)
 ```
 
 ### Package Responsibilities
 
-- **@uberskillz/types**: All shared interfaces (`Skill`, `SkillFrontmatter`, `SkillFile`, `SkillVersion`, `TestRun`, `AppSettings`, `ValidationError`) and enum types (`SkillStatus`, `TestRunStatus`, `FileType`, `Theme`).
-- **@uberskillz/db**: Drizzle ORM schema for 5 SQLite tables (`skills`, `skill_files`, `skill_versions`, `test_runs`, `settings`), typed query functions, database client with auto-migration, and AES-256-GCM encryption for API key storage.
-- **@uberskillz/skill-engine**: SKILL.md parser (YAML frontmatter + markdown body), validator (field presence/length/regex), generator (data → SKILL.md string), argument substitution (`$VARIABLE_NAME` placeholders), importer (zip/directory → parsed skills), exporter (skill → zip/filesystem).
-- **@uberskillz/ui**: Shared shadcn/ui components (Button, Input, Card, Dialog, Badge, etc.) with the "Vercel Light" design system tokens.
+- **@uberskills/types**: All shared interfaces (`Skill`, `SkillFrontmatter`, `SkillFile`, `SkillVersion`, `TestRun`, `AppSettings`, `ValidationError`) and enum types (`SkillStatus`, `TestRunStatus`, `FileType`, `Theme`).
+- **@uberskills/db**: Drizzle ORM schema for 5 SQLite tables (`skills`, `skill_files`, `skill_versions`, `test_runs`, `settings`), typed query functions, database client with auto-migration, and AES-256-GCM encryption for API key storage.
+- **@uberskills/skill-engine**: SKILL.md parser (YAML frontmatter + markdown body), validator (field presence/length/regex), generator (data → SKILL.md string), argument substitution (`$VARIABLE_NAME` placeholders), importer (zip/directory → parsed skills), exporter (skill → zip/filesystem).
+- **@uberskills/ui**: Shared shadcn/ui components (Button, Input, Card, Dialog, Badge, etc.) with the "Vercel Light" design system tokens.
 
 ## Common Commands
 
@@ -89,7 +89,7 @@ bun run db:migrate   # Run database migrations
 
 ### Imports
 
-- Use workspace package names: `import { Skill } from "@uberskillz/types";`
+- Use workspace package names: `import { Skill } from "@uberskills/types";`
 - Use path aliases in the web app: `import { NavBar } from "@/components/nav-bar";`
 - Group imports: external packages first, then workspace packages, then relative imports.
 
@@ -118,7 +118,7 @@ bun run db:migrate   # Run database migrations
 ### Connection
 
 - `DATABASE_URL` env var determines driver: `file:` prefix → `better-sqlite3`, `libsql://` prefix → `@libsql/client`.
-- Default: `file:data/uberskillz.db` (local SQLite file).
+- Default: `file:data/uberskills.db` (local SQLite file).
 - Singleton pattern: one connection per process.
 - Auto-creates `data/` directory and runs migrations on first connection.
 
@@ -156,7 +156,7 @@ return NextResponse.json({ error: "Human-readable message", code: "ERROR_CODE" }
 
 - Components live in `packages/ui/src/components/`.
 - Install via `bunx shadcn@latest add <component>` from the `packages/ui/` directory.
-- Use the `cn()` utility from `@uberskillz/ui` for conditional class merging (clsx + tailwind-merge).
+- Use the `cn()` utility from `@uberskills/ui` for conditional class merging (clsx + tailwind-merge).
 
 ### Design System ("Vercel Light" Theme)
 
@@ -206,7 +206,7 @@ return NextResponse.json({ error: "Human-readable message", code: "ERROR_CODE" }
 - All AI calls go through OpenRouter via `@openrouter/ai-sdk-provider`.
 - API key stored encrypted (AES-256-GCM) in the `settings` table.
 - Server-side proxy routes decrypt the key -- never expose it to the client.
-- Set headers: `HTTP-Referer` and `X-Title: UberSkillz` on all requests.
+- Set headers: `HTTP-Referer` and `X-Title: UberSkills` on all requests.
 
 ### Vercel AI SDK
 
@@ -228,7 +228,7 @@ return NextResponse.json({ error: "Human-readable message", code: "ERROR_CODE" }
 
 | Variable | Default | Description |
 |---|---|---|
-| `DATABASE_URL` | `file:data/uberskillz.db` | SQLite file path or Turso connection string |
+| `DATABASE_URL` | `file:data/uberskills.db` | SQLite file path or Turso connection string |
 | `ENCRYPTION_SECRET` | Auto-generated at `data/.secret` | AES-256-GCM key for API key encryption |
 | `PORT` | `3000` | Web server port |
 | `NODE_ENV` | `development` | Environment mode |

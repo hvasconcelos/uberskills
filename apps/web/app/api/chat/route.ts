@@ -1,5 +1,5 @@
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
-import { getDecryptedApiKey } from "@uberskillz/db";
+import { getDecryptedApiKey } from "@uberskills/db";
 import { streamText } from "ai";
 import { NextResponse } from "next/server";
 
@@ -68,8 +68,8 @@ export async function POST(request: Request): Promise<Response> {
   const openrouter = createOpenRouter({
     apiKey,
     headers: {
-      "HTTP-Referer": "https://uberskillz.dev",
-      "X-Title": "UberSkillz",
+      "HTTP-Referer": "https://uberskills.dev",
+      "X-Title": "UberSkills",
     },
   });
 

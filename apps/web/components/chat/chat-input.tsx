@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Textarea } from "@uberskillz/ui";
+import { Button, Textarea } from "@uberskills/ui";
 import { Loader2, Send } from "lucide-react";
 import { useCallback } from "react";
 

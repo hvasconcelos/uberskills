@@ -1,4 +1,4 @@
-import type { SkillStatus } from "@uberskillz/types";
+import type { SkillStatus } from "@uberskills/types";
 import {
   Badge,
   Table,
@@ -7,7 +7,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@uberskillz/ui";
+} from "@uberskills/ui";
 import Link from "next/link";
 
 import { StatusBadge } from "@/components/status-badge";

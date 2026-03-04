@@ -1,5 +1,5 @@
-import { listFiles, listSkills } from "@uberskillz/db";
-import { generateSkillMd } from "@uberskillz/skill-engine";
+import { listFiles, listSkills } from "@uberskills/db";
+import { generateSkillMd } from "@uberskills/skill-engine";
 import { zipSync } from "fflate";
 import { NextResponse } from "next/server";
 
@@ -47,7 +47,7 @@ export async function GET(): Promise<NextResponse> {
 
     const zipped = zipSync(files);
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-    const filename = `uberskillz-export-${timestamp}.zip`;
+    const filename = `uberskills-export-${timestamp}.zip`;
 
     return new NextResponse(Buffer.from(zipped), {
       status: 200,

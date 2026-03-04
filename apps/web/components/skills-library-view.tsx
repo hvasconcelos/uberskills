@@ -1,6 +1,6 @@
 "use client";
 
-import type { SkillStatus } from "@uberskillz/types";
+import type { SkillStatus } from "@uberskills/types";
 import { useCallback, useState } from "react";
 
 import { Pagination } from "@/components/pagination";

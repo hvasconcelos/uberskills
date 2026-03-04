@@ -1,7 +1,7 @@
 "use client";
 
-import { generateSkillMd } from "@uberskillz/skill-engine";
-import type { SkillFrontmatter, ValidationError } from "@uberskillz/types";
+import { generateSkillMd } from "@uberskills/skill-engine";
+import type { SkillFrontmatter, ValidationError } from "@uberskills/types";
 import {
   Badge,
   Button,
@@ -12,7 +12,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@uberskillz/ui";
+} from "@uberskills/ui";
 import { AlertCircle, AlertTriangle, Check, Copy, FileText } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";

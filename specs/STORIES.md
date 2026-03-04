@@ -1,4 +1,4 @@
-# Implementation Stories -- UberSkillz
+# Implementation Stories -- UberSkills
 
 > Generated from specifications in `specs/`
 > Last updated: 2026-03-03
@@ -59,7 +59,7 @@ Create the root monorepo structure using Turborepo with Bun as the package manag
 - [ ] `bun.lock` generated via `bun install`
 - [ ] `.gitignore` covering `node_modules`, `.next`, `dist`, `data/`, `.env*`, `.secret`
 - [ ] Empty placeholder directories: `apps/web/`, `packages/ui/`, `packages/db/`, `packages/skill-engine/`, `packages/types/`
-- [ ] Each package has a minimal `package.json` with correct `name` field (`@uberskillz/<name>`)
+- [ ] Each package has a minimal `package.json` with correct `name` field (`@uberskills/<name>`)
 - [ ] Running `bun install` from root succeeds without errors
 
 **Dependencies**: None
@@ -107,11 +107,11 @@ Set up Biome as the single linter and formatter for the entire monorepo. Configu
 **Size**: S (0.5 day)
 
 **Description**:
-Write the root README.md that serves as the project's public-facing documentation. Covers what UberSkillz is, the tech stack, quickstart instructions, project structure, and contribution guidelines.
+Write the root README.md that serves as the project's public-facing documentation. Covers what UberSkills is, the tech stack, quickstart instructions, project structure, and contribution guidelines.
 
 **Acceptance Criteria**:
 - [ ] Project title, tagline, and badges (license, build status placeholder)
-- [ ] Clear "What is UberSkillz?" section summarizing the tool
+- [ ] Clear "What is UberSkills?" section summarizing the tool
 - [ ] Tech stack table matching the specification
 - [ ] Quickstart section with exact commands: `git clone`, `bun install`, `bun dev`
 - [ ] Monorepo structure overview showing packages and their purposes
@@ -135,7 +135,7 @@ Write the root README.md that serves as the project's public-facing documentatio
 Write a comprehensive CLAUDE.md file at the project root that provides context and guidelines for Claude Code when working on this codebase. This file ensures consistent AI-assisted development across the project.
 
 **Acceptance Criteria**:
-- [ ] Project overview section describing UberSkillz purpose and architecture
+- [ ] Project overview section describing UberSkills purpose and architecture
 - [ ] Tech stack and key dependencies listed with versions
 - [ ] Monorepo structure with package responsibilities
 - [ ] Coding conventions: TypeScript strict, Biome formatting rules, import style
@@ -273,7 +273,7 @@ Create the GitHub Actions CI workflow that runs lint, typecheck, test, build, an
 
 ---
 
-### S1-1: Create @uberskillz/types package -- core interfaces
+### S1-1: Create @uberskills/types package -- core interfaces
 
 **Size**: M (1 day)
 
@@ -302,7 +302,7 @@ Implement all shared TypeScript interfaces and types in the `packages/types/` pa
 
 ---
 
-### S1-2: Create @uberskillz/db -- Drizzle schema definitions
+### S1-2: Create @uberskills/db -- Drizzle schema definitions
 
 **Size**: M (1 day)
 
@@ -329,7 +329,7 @@ Define all 5 database tables using Drizzle ORM's SQLite schema API. Includes the
 
 ---
 
-### S1-3: Create @uberskillz/db -- client and connection
+### S1-3: Create @uberskills/db -- client and connection
 
 **Size**: M (1 day)
 
@@ -340,7 +340,7 @@ Implement the database client that supports both local SQLite (via `better-sqlit
 - [ ] `packages/db/src/client.ts` exports a `getDb()` function returning a Drizzle instance
 - [ ] Detects `file:` prefix in `DATABASE_URL` for local SQLite via `better-sqlite3`
 - [ ] Detects `libsql://` prefix for Turso via `@libsql/client`
-- [ ] Default `DATABASE_URL` is `file:data/uberskillz.db` when not set
+- [ ] Default `DATABASE_URL` is `file:data/uberskills.db` when not set
 - [ ] Auto-creates `data/` directory if it does not exist
 - [ ] Singleton pattern: database connection reused across requests
 - [ ] Database file path is resolved relative to the project root
@@ -355,7 +355,7 @@ Implement the database client that supports both local SQLite (via `better-sqlit
 
 ---
 
-### S1-4: Create @uberskillz/db -- migrations and seed
+### S1-4: Create @uberskills/db -- migrations and seed
 
 **Size**: S (0.5 day)
 
@@ -382,7 +382,7 @@ Generate the initial Drizzle migration from the schema, implement a migration ru
 
 ---
 
-### S1-5: Create @uberskillz/db -- query functions (skills)
+### S1-5: Create @uberskills/db -- query functions (skills)
 
 **Size**: M (1 day)
 
@@ -409,7 +409,7 @@ Implement typed query functions for the `skills` table: list with search/filter/
 
 ---
 
-### S1-6: Create @uberskillz/db -- query functions (versions, files, test runs, settings)
+### S1-6: Create @uberskills/db -- query functions (versions, files, test runs, settings)
 
 **Size**: M (1 day)
 
@@ -440,7 +440,7 @@ Implement typed query functions for the remaining 4 tables: `skill_versions`, `s
 
 ---
 
-### S1-7: Create @uberskillz/skill-engine -- parser and validator
+### S1-7: Create @uberskills/skill-engine -- parser and validator
 
 **Size**: L (2 days)
 
@@ -470,7 +470,7 @@ Implement the SKILL.md parser (YAML frontmatter extraction + markdown body) and 
 
 ---
 
-### S1-8: Create @uberskillz/skill-engine -- generator and substitutions
+### S1-8: Create @uberskills/skill-engine -- generator and substitutions
 
 **Size**: M (1 day)
 
@@ -507,7 +507,7 @@ Implement the SKILL.md generator (structured data to markdown string) and the ar
 
 ---
 
-### S2-1: Initialize @uberskillz/ui package with shadcn/ui
+### S2-1: Initialize @uberskills/ui package with shadcn/ui
 
 **Size**: M (1 day)
 
@@ -520,7 +520,7 @@ Set up the shared UI component package using shadcn/ui. Configure the package to
 - [ ] `packages/ui/src/lib/utils.ts` with the `cn()` utility (clsx + tailwind-merge)
 - [ ] Package exports components from `packages/ui/src/index.ts`
 - [ ] TypeScript configured with path aliases
-- [ ] A test import from `@uberskillz/ui` works in the web app
+- [ ] A test import from `@uberskills/ui` works in the web app
 - [ ] `tailwind.config.ts` or CSS config supports the design system tokens
 
 **Dependencies**: S0-5
@@ -543,7 +543,7 @@ Install and configure the essential shadcn/ui components that will be used acros
 
 **Acceptance Criteria**:
 - [ ] Installed components: Button, Input, Textarea, Select, Dialog, DropdownMenu, Badge, Card, Tabs, Table, Tooltip, Toast (Sonner), Label, Separator, Skeleton, Checkbox
-- [ ] All components exported from `@uberskillz/ui`
+- [ ] All components exported from `@uberskills/ui`
 - [ ] Button variants match spec: primary (black bg), secondary (white bg, border), ghost, destructive
 - [ ] Card styling: no box-shadow, 1px border, rounded-lg
 - [ ] Badge styling: pill shape (rounded-full), status-specific colors (draft/ready/deployed/error)
@@ -602,12 +602,12 @@ Implement the complete "Vercel Light" color system using CSS custom properties. 
 **Size**: S (0.5 day)
 
 **Description**:
-Create the top navigation bar that appears on every page. Includes the UberSkillz text logo, navigation links (Skills, Import, Settings), and responsive behavior.
+Create the top navigation bar that appears on every page. Includes the UberSkills text logo, navigation links (Skills, Import, Settings), and responsive behavior.
 
 **Acceptance Criteria**:
 - [ ] `apps/web/components/nav-bar.tsx` -- responsive navigation component
 - [ ] White/dark background with 1px bottom border
-- [ ] "UberSkillz" text logo on the left in bold
+- [ ] "UberSkills" text logo on the left in bold
 - [ ] Nav links: Skills (`/skills`), Import (`/import`), Settings (`/settings`)
 - [ ] Active link highlighted with `--foreground` color, inactive in `--muted-foreground`
 - [ ] Full-width bar, content centered with `max-w-6xl`
@@ -638,7 +638,7 @@ Update the root layout to include the navigation bar, theme provider, toast prov
 - [ ] Theme applies via `<html class="dark">` Tailwind strategy
 - [ ] System preference detected via `matchMedia('(prefers-color-scheme: dark)')`
 - [ ] Toast provider (Sonner) mounted for global notifications
-- [ ] Metadata: title "UberSkillz", description, viewport settings
+- [ ] Metadata: title "UberSkills", description, viewport settings
 - [ ] No flash of unstyled content (FOUC) on page load
 
 **Dependencies**: S2-4
@@ -660,11 +660,11 @@ Create the dashboard/home page at `/` that provides an overview and quick access
 
 **Acceptance Criteria**:
 - [ ] `apps/web/app/page.tsx` renders the dashboard
-- [ ] Welcome section with "UberSkillz" heading and brief description
+- [ ] Welcome section with "UberSkills" heading and brief description
 - [ ] Quick actions: "New Skill" button (links to `/skills/new`), "Browse Library" (links to `/skills`), "Import" (links to `/import`)
 - [ ] Recent skills section showing last 5 updated skills (empty state if no skills)
 - [ ] Quick stats: total skills count, draft/ready/deployed counts
-- [ ] Data fetched server-side using `@uberskillz/db` queries
+- [ ] Data fetched server-side using `@uberskills/db` queries
 - [ ] Responsive layout, clean design matching Vercel aesthetic
 
 **Dependencies**: S2-5, S1-5
@@ -745,7 +745,7 @@ Create the `/api/settings` route handler that reads and writes application setti
 - [ ] GET returns `AppSettings` object: `{ openrouterApiKey: string | null (masked), defaultModel, theme }`
 - [ ] API key in GET response is masked: last 4 chars visible, rest replaced with dots
 - [ ] PUT accepts partial settings updates: `{ openrouterApiKey?, defaultModel?, theme? }`
-- [ ] When updating `openrouterApiKey`, encrypts using `@uberskillz/db` crypto module
+- [ ] When updating `openrouterApiKey`, encrypts using `@uberskills/db` crypto module
 - [ ] Consistent error response format: `{ error: string, code: string }`
 - [ ] Returns 200 on success with updated settings
 - [ ] Unit tests for route handler logic
@@ -1207,7 +1207,7 @@ Create the `/api/chat` route handler that streams AI responses using Vercel AI S
 - [ ] Calls `streamText()` with selected model, system prompt, and messages
 - [ ] Returns `result.toDataStreamResponse()` for streaming to client
 - [ ] System prompt instructs AI to generate valid SKILL.md with YAML frontmatter
-- [ ] OpenRouter headers set: `HTTP-Referer`, `X-Title: UberSkillz`
+- [ ] OpenRouter headers set: `HTTP-Referer`, `X-Title: UberSkills`
 - [ ] Error handling: missing API key (401), invalid model (400), rate limit (429), network error (502)
 - [ ] Consistent error format: `{ error, code }`
 
@@ -1453,7 +1453,7 @@ Create the `/api/export` and `/api/export/deploy` route handlers. Export generat
 - [ ] `apps/web/app/api/export/route.ts` -- POST handler for zip export
 - [ ] Receives `{ skillId }` or `{ skillIds: string[] }` for batch export
 - [ ] Returns zip file as downloadable response with `Content-Disposition` header
-- [ ] Filename: `<slug>.zip` for single, `uberskillz-export.zip` for batch
+- [ ] Filename: `<slug>.zip` for single, `uberskills-export.zip` for batch
 - [ ] `apps/web/app/api/export/deploy/route.ts` -- POST handler for filesystem deploy
 - [ ] Receives `{ skillId }`
 - [ ] Deploys to `~/.claude/skills/<slug>/`
@@ -1589,9 +1589,9 @@ Implement the backup and restore functions used by the Settings page Data Manage
 
 **Acceptance Criteria**:
 - [ ] Backup API: GET `/api/settings/backup` returns the SQLite database file as a download
-- [ ] Filename: `uberskillsz-backup-YYYY-MM-DD.db`
+- [ ] Filename: `uberskills-backup-YYYY-MM-DD.db`
 - [ ] Restore API: POST `/api/settings/restore` accepts uploaded SQLite file
-- [ ] Before restore: creates automatic backup at `data/backups/uberskillsz-TIMESTAMP.db`
+- [ ] Before restore: creates automatic backup at `data/backups/uberskills-TIMESTAMP.db`
 - [ ] Creates `data/backups/` directory if it doesn't exist
 - [ ] After restore: validates the uploaded file is a valid SQLite database
 - [ ] Returns error if uploaded file is not a valid SQLite database

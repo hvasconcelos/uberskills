@@ -2,7 +2,7 @@
 
 ## OpenRouter API
 
-UberSkillz uses [OpenRouter](https://openrouter.ai) as its AI provider, giving users access to multiple models (Claude, GPT, Gemini, Llama, etc.) through a single API.
+UberSkills uses [OpenRouter](https://openrouter.ai) as its AI provider, giving users access to multiple models (Claude, GPT, Gemini, Llama, etc.) through a single API.
 
 ### Models Endpoint
 
@@ -37,7 +37,7 @@ Responses are streamed using Server-Sent Events (SSE). Token usage is returned i
 
 ```
 HTTP-Referer: http://localhost:3000
-X-Title: UberSkillz
+X-Title: UberSkills
 ```
 
 These headers identify the application to OpenRouter for analytics and are set in the provider configuration.
@@ -109,7 +109,7 @@ const openrouter = createOpenRouter({
   // OpenRouter-specific headers
   headers: {
     "HTTP-Referer": "http://localhost:3000",
-    "X-Title": "UberSkillz",
+    "X-Title": "UberSkills",
   },
 });
 
@@ -117,7 +117,7 @@ const openrouter = createOpenRouter({
 const model = openrouter("anthropic/claude-sonnet-4");
 ```
 
-## Skill Engine (`@uberskillz/skill-engine`)
+## Skill Engine (`@uberskills/skill-engine`)
 
 The skill-engine package handles all SKILL.md parsing, validation, generation, and filesystem operations. It is the core business logic package with no UI dependencies.
 

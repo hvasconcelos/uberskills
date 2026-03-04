@@ -9,7 +9,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@uberskillz/ui";
+} from "@uberskills/ui";
 import { LayoutGrid, List, Search } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -33,7 +33,7 @@ const DEBOUNCE_MS = 300;
 
 export type ViewMode = "grid" | "list";
 
-const STORAGE_KEY = "uberskillz-view-mode";
+const STORAGE_KEY = "uberskills-view-mode";
 
 /** Reads the persisted view preference from localStorage, defaulting to "grid". */
 function getStoredViewMode(): ViewMode {

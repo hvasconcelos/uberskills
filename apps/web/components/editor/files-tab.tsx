@@ -14,7 +14,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@uberskillz/ui";
+} from "@uberskills/ui";
 import { Edit, FileText, FolderOpen, Loader2, Plus, Trash2 } from "lucide-react";
 import { useCallback, useState } from "react";
 import { toast } from "sonner";

@@ -1,4 +1,4 @@
-import { cn } from "@uberskillz/ui";
+import { cn } from "@uberskills/ui";
 
 interface PageHeaderProps {
   /** Page title displayed as an h1. */

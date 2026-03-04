@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("@uberskillz/db", () => ({
+vi.mock("@uberskills/db", () => ({
   getSkillById: vi.fn(),
   listFiles: vi.fn(),
   updateSkill: vi.fn(),
@@ -9,7 +9,7 @@ vi.mock("@uberskillz/db", () => ({
 }));
 
 const { getSkillById, listFiles, updateSkill, deleteSkill, createVersion } = await import(
-  "@uberskillz/db"
+  "@uberskills/db"
 );
 const mockedGetSkillById = vi.mocked(getSkillById);
 const mockedListFiles = vi.mocked(listFiles);

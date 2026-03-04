@@ -2,7 +2,7 @@
 
 ## Overview
 
-UberSkillz uses **SQLite** as its database, accessed via **Drizzle ORM** for type-safe queries. The database file is stored locally at `data/uberskillz.db` (configurable via `DATABASE_URL` env var).
+UberSkills uses **SQLite** as its database, accessed via **Drizzle ORM** for type-safe queries. The database file is stored locally at `data/uberskills.db` (configurable via `DATABASE_URL` env var).
 
 There are **5 tables**: `skills`, `skill_files`, `skill_versions`, `test_runs`, and `settings`.
 

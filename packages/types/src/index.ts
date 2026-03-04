@@ -1,4 +1,4 @@
-// @uberskillz/types — shared TypeScript types
+// @uberskills/types — shared TypeScript types
 
 export type { AppSettings, Theme, ValidationError } from "./settings";
 export type {

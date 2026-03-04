@@ -1,4 +1,4 @@
-import type { SkillFrontmatter } from "@uberskillz/types";
+import type { SkillFrontmatter } from "@uberskills/types";
 import { parse as parseYaml } from "yaml";
 
 /** Result of parsing a SKILL.md file. */

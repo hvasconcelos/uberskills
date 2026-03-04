@@ -1,6 +1,6 @@
 "use client";
 
-import { detectPlaceholders, substitute } from "@uberskillz/skill-engine";
+import { detectPlaceholders, substitute } from "@uberskills/skill-engine";
 import {
   Button,
   Label,
@@ -11,7 +11,7 @@ import {
   SelectValue,
   Separator,
   Textarea,
-} from "@uberskillz/ui";
+} from "@uberskills/ui";
 import { ArrowLeft, Key, Loader2, Play } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useMemo, useState } from "react";

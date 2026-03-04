@@ -4,7 +4,7 @@ import { dirname, resolve } from "node:path";
 /**
  * Default database URL used when `DATABASE_URL` is not set.
  */
-export const DEFAULT_DATABASE_URL = "file:data/uberskillz.db";
+export const DEFAULT_DATABASE_URL = "file:data/uberskills.db";
 
 // biome-ignore lint/suspicious/noExplicitAny: Dynamic driver selection requires untyped bridge
 type AnyDb = any;

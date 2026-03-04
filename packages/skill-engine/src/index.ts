@@ -1,4 +1,4 @@
-// @uberskillz/skill-engine -- skill parsing, validation, generation, substitution
+// @uberskills/skill-engine -- skill parsing, validation, generation, substitution
 
 export { generateSkillMd } from "./generator";
 export { type ParseResult, parseSkillMd } from "./parser";

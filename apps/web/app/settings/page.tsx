@@ -1,6 +1,6 @@
 "use client";
 
-import type { AppSettings, Theme } from "@uberskillz/types";
+import type { AppSettings, Theme } from "@uberskills/types";
 import {
   Button,
   Card,
@@ -22,7 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
   Separator,
-} from "@uberskillz/ui";
+} from "@uberskills/ui";
 import {
   CheckCircle2,
   Database,
@@ -226,7 +226,7 @@ export default function SettingsPage() {
     () =>
       fetchAndDownload(
         "/api/export",
-        "uberskillz-export.zip",
+        "uberskills-export.zip",
         "Skills exported successfully",
         setExporting,
       ),
@@ -237,7 +237,7 @@ export default function SettingsPage() {
     () =>
       fetchAndDownload(
         "/api/backup",
-        "uberskillz-backup.db",
+        "uberskills-backup.db",
         "Database backup downloaded",
         setBackingUp,
       ),

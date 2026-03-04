@@ -1,4 +1,4 @@
-import { getTestRun } from "@uberskillz/db";
+import { getTestRun } from "@uberskills/db";
 import { NextResponse } from "next/server";
 
 type RouteContext = { params: Promise<{ id: string }> };

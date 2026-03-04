@@ -1,4 +1,4 @@
-// @uberskillz/ui — shared shadcn/ui component library
+// @uberskills/ui — shared shadcn/ui component library
 
 // Components
 export { Badge, badgeVariants } from "./components/badge";

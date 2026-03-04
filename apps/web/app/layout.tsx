@@ -2,12 +2,12 @@ import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata, Viewport } from "next";
 import "@/styles/globals.css";
-import { Toaster } from "@uberskillz/ui";
+import { Toaster } from "@uberskills/ui";
 import { AppLayout } from "@/components/app-layout";
 import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
-  title: "UberSkillz",
+  title: "UberSkills",
   description: "Design, test, and deploy Claude Code Agent Skills",
   manifest: "/manifest.json",
 };

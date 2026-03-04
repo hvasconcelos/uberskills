@@ -1,4 +1,4 @@
-import { getSkillBySlug, listFiles } from "@uberskillz/db";
+import { getSkillBySlug, listFiles } from "@uberskills/db";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 

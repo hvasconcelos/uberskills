@@ -1,4 +1,4 @@
-import type { TestRunStatus } from "@uberskillz/types";
+import type { TestRunStatus } from "@uberskills/types";
 import { desc, eq } from "drizzle-orm";
 import { getDb } from "../client";
 import { testRuns } from "../schema";

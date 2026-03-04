@@ -1,4 +1,4 @@
-import type { SkillStatus } from "@uberskillz/types";
+import type { SkillStatus } from "@uberskills/types";
 import { and, asc, count, desc, eq, like, or } from "drizzle-orm";
 import { getDb } from "../client";
 import { skills } from "../schema";

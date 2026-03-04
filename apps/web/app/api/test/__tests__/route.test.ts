@@ -1,13 +1,13 @@
 import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 
-vi.mock("@uberskillz/db", () => ({
+vi.mock("@uberskills/db", () => ({
   getDecryptedApiKey: vi.fn(),
   getSkillById: vi.fn(),
   createTestRun: vi.fn(),
   updateTestRun: vi.fn(),
 }));
 
-vi.mock("@uberskillz/skill-engine", () => ({
+vi.mock("@uberskills/skill-engine", () => ({
   substitute: vi.fn(),
 }));
 
@@ -20,14 +20,14 @@ vi.mock("ai", () => ({
 }));
 
 const { getDecryptedApiKey, getSkillById, createTestRun, updateTestRun } = await import(
-  "@uberskillz/db"
+  "@uberskills/db"
 );
 const mockedGetDecryptedApiKey = vi.mocked(getDecryptedApiKey);
 const mockedGetSkillById = vi.mocked(getSkillById);
 const mockedCreateTestRun = vi.mocked(createTestRun);
 const mockedUpdateTestRun = vi.mocked(updateTestRun);
 
-const { substitute } = await import("@uberskillz/skill-engine");
+const { substitute } = await import("@uberskills/skill-engine");
 const mockedSubstitute = vi.mocked(substitute);
 
 const { createOpenRouter } = await import("@openrouter/ai-sdk-provider");
@@ -284,8 +284,8 @@ describe("POST /api/test", () => {
     expect(mockedCreateOpenRouter).toHaveBeenCalledWith({
       apiKey: "sk-or-v1-test",
       headers: {
-        "HTTP-Referer": "https://uberskillz.dev",
-        "X-Title": "UberSkillz",
+        "HTTP-Referer": "https://uberskills.dev",
+        "X-Title": "UberSkills",
       },
     });
 

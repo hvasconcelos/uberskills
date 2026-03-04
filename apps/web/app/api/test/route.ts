@@ -1,6 +1,6 @@
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
-import { createTestRun, getDecryptedApiKey, getSkillById, updateTestRun } from "@uberskillz/db";
-import { substitute } from "@uberskillz/skill-engine";
+import { createTestRun, getDecryptedApiKey, getSkillById, updateTestRun } from "@uberskills/db";
+import { substitute } from "@uberskills/skill-engine";
 import { streamText } from "ai";
 import { NextResponse } from "next/server";
 
@@ -109,8 +109,8 @@ export async function POST(request: Request): Promise<Response> {
   const openrouter = createOpenRouter({
     apiKey,
     headers: {
-      "HTTP-Referer": "https://uberskillz.dev",
-      "X-Title": "UberSkillz",
+      "HTTP-Referer": "https://uberskills.dev",
+      "X-Title": "UberSkills",
     },
   });
 

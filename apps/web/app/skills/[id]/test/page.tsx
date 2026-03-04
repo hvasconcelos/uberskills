@@ -1,4 +1,4 @@
-import { getAllSettings, getDecryptedApiKey, getSkillBySlug } from "@uberskillz/db";
+import { getAllSettings, getDecryptedApiKey, getSkillBySlug } from "@uberskills/db";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 

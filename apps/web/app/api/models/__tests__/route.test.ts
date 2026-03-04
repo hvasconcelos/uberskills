@@ -1,10 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("@uberskillz/db", () => ({
+vi.mock("@uberskills/db", () => ({
   getDecryptedApiKey: vi.fn(),
 }));
 
-const { getDecryptedApiKey } = await import("@uberskillz/db");
+const { getDecryptedApiKey } = await import("@uberskills/db");
 const mockedGetDecryptedApiKey = vi.mocked(getDecryptedApiKey);
 
 const { GET } = await import("../route");

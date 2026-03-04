@@ -1,7 +1,7 @@
 "use client";
 
 import { useChat } from "@ai-sdk/react";
-import type { AppSettings } from "@uberskillz/types";
+import type { AppSettings } from "@uberskills/types";
 import { DefaultChatTransport } from "ai";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";

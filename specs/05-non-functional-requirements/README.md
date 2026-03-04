@@ -70,7 +70,7 @@ Note: `unsafe-inline` and `unsafe-eval` are required by Next.js in development. 
 
 ```bash
 git clone <repo>
-cd uberskillsz
+cd uberskills
 bun install
 bun dev
 # → App running at http://localhost:3000
@@ -91,8 +91,8 @@ No Docker, no Postgres, no external services, no signup. SQLite database is auto
 
 ### Monorepo Conventions
 
-- Package names: `@uberskillz/<package>`
-- Import paths: `@uberskillz/ui`, `@uberskillz/db`, etc.
+- Package names: `@uberskills/<package>`
+- Import paths: `@uberskills/ui`, `@uberskills/db`, etc.
 - Shared TypeScript config: `tsconfig.json` at root, extended per package.
 - Environment variables: `.env.local` in `apps/web/`, never committed.
 

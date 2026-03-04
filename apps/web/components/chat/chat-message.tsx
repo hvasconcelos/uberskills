@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@uberskillz/ui";
+import { cn } from "@uberskills/ui";
 import type { UIMessage } from "ai";
 import { Bot, User } from "lucide-react";
 

@@ -1,6 +1,6 @@
 import { copyFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
-import { resetDbForTesting } from "@uberskillz/db";
+import { resetDbForTesting } from "@uberskills/db";
 import { type NextRequest, NextResponse } from "next/server";
 
 import { getDbPath } from "../../../../lib/db-path";
@@ -53,7 +53,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         mkdirSync(backupDir, { recursive: true });
       }
       const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-      const backupPath = resolve(backupDir, `uberskillz-pre-restore-${timestamp}.db`);
+      const backupPath = resolve(backupDir, `uberskills-pre-restore-${timestamp}.db`);
       copyFileSync(dbPath, backupPath);
     }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, cn } from "@uberskillz/ui";
+import { Button, cn } from "@uberskills/ui";
 import { AlertTriangle } from "lucide-react";
 import { Component } from "react";
 

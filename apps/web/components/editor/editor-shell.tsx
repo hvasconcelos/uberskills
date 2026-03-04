@@ -1,6 +1,6 @@
 "use client";
 
-import type { SkillStatus } from "@uberskillz/types";
+import type { SkillStatus } from "@uberskills/types";
 import {
   Button,
   Dialog,
@@ -23,7 +23,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@uberskillz/ui";
+} from "@uberskills/ui";
 import {
   AlertCircle,
   AlertTriangle,

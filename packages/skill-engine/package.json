@@ -1,5 +1,5 @@
 {
-  "name": "@uberskillz/skill-engine",
+  "name": "@uberskills/skill-engine",
   "version": "0.0.0",
   "private": true,
   "main": "./src/index.ts",
@@ -9,8 +9,8 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@uberskillz/db": "workspace:*",
-    "@uberskillz/types": "workspace:*",
+    "@uberskills/db": "workspace:*",
+    "@uberskills/types": "workspace:*",
     "yaml": "^2.8.2"
   },
   "devDependencies": {

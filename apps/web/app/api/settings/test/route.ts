@@ -1,4 +1,4 @@
-import { getDecryptedApiKey } from "@uberskillz/db";
+import { getDecryptedApiKey } from "@uberskills/db";
 import { NextResponse } from "next/server";
 
 /**
@@ -20,8 +20,8 @@ export async function GET(): Promise<NextResponse> {
     const res = await fetch("https://openrouter.ai/api/v1/models", {
       headers: {
         Authorization: `Bearer ${apiKey}`,
-        "HTTP-Referer": "https://uberskillz.dev",
-        "X-Title": "UberSkillz",
+        "HTTP-Referer": "https://uberskills.dev",
+        "X-Title": "UberSkills",
       },
     });
 

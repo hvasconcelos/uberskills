@@ -1,4 +1,4 @@
-import { Skeleton } from "@uberskillz/ui";
+import { Skeleton } from "@uberskills/ui";
 
 import { LoadingSkeleton } from "@/components/loading-skeleton";
 

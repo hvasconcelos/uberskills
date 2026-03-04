@@ -49,13 +49,13 @@ describe("client", () => {
     it("uses the default DATABASE_URL when env var is not set", () => {
       delete process.env.DATABASE_URL;
 
-      // The default is file:data/uberskillz.db — this should create data/ dir
+      // The default is file:data/uberskills.db — this should create data/ dir
       const db = getDb();
       expect(db).toBeDefined();
 
       // Clean up default database
       const defaultDir = resolve(process.cwd(), "data");
-      const defaultDb = resolve(defaultDir, "uberskillz.db");
+      const defaultDb = resolve(defaultDir, "uberskills.db");
       if (existsSync(defaultDb)) {
         rmSync(defaultDb, { force: true });
       }

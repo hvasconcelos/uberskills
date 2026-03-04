@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("@uberskillz/db", () => ({
+vi.mock("@uberskills/db", () => ({
   getDecryptedApiKey: vi.fn(),
 }));
 
@@ -12,7 +12,7 @@ vi.mock("ai", () => ({
   streamText: vi.fn(),
 }));
 
-const { getDecryptedApiKey } = await import("@uberskillz/db");
+const { getDecryptedApiKey } = await import("@uberskills/db");
 const mockedGetDecryptedApiKey = vi.mocked(getDecryptedApiKey);
 
 const { createOpenRouter } = await import("@openrouter/ai-sdk-provider");
@@ -151,8 +151,8 @@ describe("POST /api/chat", () => {
     expect(mockedCreateOpenRouter).toHaveBeenCalledWith({
       apiKey: "sk-or-v1-test",
       headers: {
-        "HTTP-Referer": "https://uberskillz.dev",
-        "X-Title": "UberSkillz",
+        "HTTP-Referer": "https://uberskills.dev",
+        "X-Title": "UberSkills",
       },
     });
 

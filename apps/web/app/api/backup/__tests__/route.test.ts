@@ -25,7 +25,7 @@ describe("GET /api/backup", () => {
 
     expect(response.status).toBe(200);
     expect(response.headers.get("Content-Type")).toBe("application/octet-stream");
-    expect(response.headers.get("Content-Disposition")).toContain("uberskillz-backup-");
+    expect(response.headers.get("Content-Disposition")).toContain("uberskills-backup-");
   });
 
   it("returns 404 when database file does not exist", async () => {

@@ -1,4 +1,4 @@
-import type { FileType } from "@uberskillz/types";
+import type { FileType } from "@uberskills/types";
 import { eq } from "drizzle-orm";
 import { getDb } from "../client";
 import { skillFiles } from "../schema";

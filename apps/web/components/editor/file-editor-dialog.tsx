@@ -14,7 +14,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@uberskillz/ui";
+} from "@uberskills/ui";
 import { Loader2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 

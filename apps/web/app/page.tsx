@@ -1,5 +1,5 @@
-import { listSkills } from "@uberskillz/db";
-import { Button, Card, CardContent } from "@uberskillz/ui";
+import { listSkills } from "@uberskills/db";
+import { Button, Card, CardContent } from "@uberskills/ui";
 import { ArrowRight, Library, Plus, Upload } from "lucide-react";
 import Link from "next/link";
 
@@ -33,7 +33,7 @@ export default function DashboardPage() {
     <div className="space-y-8">
       {/* Welcome section */}
       <section>
-        <h1 className="text-page-title tracking-tight">UberSkillz</h1>
+        <h1 className="text-page-title tracking-tight">UberSkills</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           Design, test, and deploy Claude Code Agent Skills.
         </p>

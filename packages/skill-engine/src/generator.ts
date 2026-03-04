@@ -1,4 +1,4 @@
-import type { SkillFrontmatter } from "@uberskillz/types";
+import type { SkillFrontmatter } from "@uberskills/types";
 import { stringify as stringifyYaml } from "yaml";
 
 /**

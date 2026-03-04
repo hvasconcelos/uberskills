@@ -1,6 +1,6 @@
 "use client";
 
-import { Separator } from "@uberskillz/ui";
+import { Separator } from "@uberskills/ui";
 import { Clock, Hash, Zap } from "lucide-react";
 
 export interface TestMetricsData {

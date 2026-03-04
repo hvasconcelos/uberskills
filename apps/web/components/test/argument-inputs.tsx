@@ -1,6 +1,6 @@
 "use client";
 
-import { Input, Label } from "@uberskillz/ui";
+import { Input, Label } from "@uberskills/ui";
 
 interface ArgumentInputsProps {
   /** Placeholder names detected in the skill content (without $ prefix). */

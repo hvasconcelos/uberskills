@@ -1,5 +1,5 @@
-import type { SkillStatus } from "@uberskillz/types";
-import { Badge, Card, CardContent, cn } from "@uberskillz/ui";
+import type { SkillStatus } from "@uberskills/types";
+import { Badge, Card, CardContent, cn } from "@uberskills/ui";
 import Link from "next/link";
 
 import { StatusBadge } from "@/components/status-badge";

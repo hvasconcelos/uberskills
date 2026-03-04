@@ -4,15 +4,15 @@
 
 ```bash
 # 1. Clone and install
-git clone https://github.com/<org>/uberskillsz.git
-cd uberskillsz
+git clone https://github.com/<org>/uberskills.git
+cd uberskills
 bun install
 
 # 2. Start development server
 bun dev
 
 # App is now running at http://localhost:3000
-# SQLite database is auto-created at data/uberskillz.db
+# SQLite database is auto-created at data/uberskills.db
 ```
 
 No additional setup required. On first launch, the app will:
@@ -25,7 +25,7 @@ No additional setup required. On first launch, the app will:
 
 | Variable | Required | Default | Description |
 |---|---|---|---|
-| `DATABASE_URL` | No | `file:data/uberskillz.db` | SQLite database file path |
+| `DATABASE_URL` | No | `file:data/uberskills.db` | SQLite database file path |
 | `ENCRYPTION_SECRET` | No | Auto-generated | AES-256 key for encrypting settings. If not set, generated on first run and stored at `data/.secret` |
 | `PORT` | No | `3000` | Development server port |
 | `NODE_ENV` | No | `development` | Environment mode |
@@ -61,7 +61,7 @@ FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
-ENV DATABASE_URL=file:/app/data/uberskillz.db
+ENV DATABASE_URL=file:/app/data/uberskills.db
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
@@ -88,19 +88,19 @@ CMD ["node", "apps/web/server.js"]
 version: "3.8"
 
 services:
-  uberskillsz:
+  uberskills:
     build: .
     ports:
       - "3000:3000"
     volumes:
-      - uberskillsz-data:/app/data
+      - uberskills-data:/app/data
     environment:
       - NODE_ENV=production
-      - DATABASE_URL=file:/app/data/uberskillz.db
+      - DATABASE_URL=file:/app/data/uberskills.db
     restart: unless-stopped
 
 volumes:
-  uberskillsz-data:
+  uberskills-data:
 ```
 
 ### Docker Commands
@@ -110,7 +110,7 @@ volumes:
 docker compose up -d
 
 # View logs
-docker compose logs -f uberskillsz
+docker compose logs -f uberskills
 
 # Stop
 docker compose down
@@ -127,8 +127,8 @@ For cloud deployment, SQLite is replaced with [Turso](https://turso.tech) (libSQ
 
 1. Create a Turso database:
    ```bash
-   turso db create uberskillsz
-   turso db tokens create uberskillsz
+   turso db create uberskills
+   turso db tokens create uberskills
    ```
 
 2. Set environment variables in Vercel:
@@ -168,7 +168,7 @@ For cloud deployment, SQLite is replaced with [Turso](https://turso.tech) (libSQ
 ```nginx
 server {
     listen 80;
-    server_name uberskillz.example.com;
+    server_name uberskills.example.com;
 
     location / {
         proxy_pass http://127.0.0.1:3000;
@@ -190,21 +190,21 @@ server {
 ### With systemd
 
 ```ini
-# /etc/systemd/system/uberskillsz.service
+# /etc/systemd/system/uberskills.service
 [Unit]
-Description=UberSkillz
+Description=UberSkills
 After=network.target
 
 [Service]
 Type=simple
-User=uberskillsz
-WorkingDirectory=/opt/uberskillsz
+User=uberskills
+WorkingDirectory=/opt/uberskills
 ExecStart=/usr/local/bin/node apps/web/server.js
 Restart=on-failure
 RestartSec=5
 Environment=NODE_ENV=production
 Environment=PORT=3000
-Environment=DATABASE_URL=file:/opt/uberskillsz/data/uberskillz.db
+Environment=DATABASE_URL=file:/opt/uberskills/data/uberskills.db
 
 [Install]
 WantedBy=multi-user.target
@@ -298,15 +298,15 @@ jobs:
 
 ## Implementation Sequencing
 
-Recommended order for building UberSkillz after the spec is complete:
+Recommended order for building UberSkills after the spec is complete:
 
 | Phase | Scope | Dependencies |
 |---|---|---|
 | 1 | Monorepo scaffolding (Turborepo, Bun, TypeScript, Biome) | None |
-| 2 | `@uberskillz/types` — shared TypeScript interfaces | Phase 1 |
-| 3 | `@uberskillz/db` — Drizzle schema, migrations, client, queries | Phase 2 |
-| 4 | `@uberskillz/skill-engine` — parser, validator, generator | Phase 2 |
-| 5 | `@uberskillz/ui` — shadcn/ui component library setup | Phase 1 |
+| 2 | `@uberskills/types` — shared TypeScript interfaces | Phase 1 |
+| 3 | `@uberskills/db` — Drizzle schema, migrations, client, queries | Phase 2 |
+| 4 | `@uberskills/skill-engine` — parser, validator, generator | Phase 2 |
+| 5 | `@uberskills/ui` — shadcn/ui component library setup | Phase 1 |
 | 6 | `apps/web` — Next.js app shell (layout, navigation, theme) | Phase 5 |
 | 7 | FR7: Settings page (API key, preferences) | Phase 3, 6 |
 | 8 | FR1: Skills Library page | Phase 3, 6 |

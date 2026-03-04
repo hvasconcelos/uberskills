@@ -1,17 +1,17 @@
-# UberSkillz
+# UberSkills
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-black.svg)](LICENSE)
-[![Build](https://img.shields.io/github/actions/workflow/status/uberskillz/uberskillsz/ci.yml?branch=main)](https://github.com/uberskillz/uberskillsz/actions)
+[![Build](https://img.shields.io/github/actions/workflow/status/uberskills/uberskills/ci.yml?branch=main)](https://github.com/uberskills/uberskills/actions)
 
 **Design, test, and deploy Claude Code Agent Skills through a visual, AI-assisted workflow.**
 
-UberSkillz replaces manual `SKILL.md` authoring with a structured editor, multi-model testing sandbox, and one-click deployment to `~/.claude/skills/`.
+UberSkills replaces manual `SKILL.md` authoring with a structured editor, multi-model testing sandbox, and one-click deployment to `~/.claude/skills/`.
 
-## What is UberSkillz?
+## What is UberSkills?
 
 Creating [Claude Code Agent Skills](https://docs.anthropic.com/en/docs/claude-code/skills) today is entirely manual -- authors hand-write YAML frontmatter and markdown instructions, with no built-in way to preview, validate, or test a skill before deploying it.
 
-UberSkillz is an open-source web application that provides an integrated authoring environment purpose-built for the Claude Code skill format:
+UberSkills is an open-source web application that provides an integrated authoring environment purpose-built for the Claude Code skill format:
 
 - **Skills Library** -- Browse, search, filter, and manage all your skills in one place
 - **AI-Assisted Creation** -- Describe what you want in natural language; get a complete SKILL.md draft
@@ -39,8 +39,8 @@ UberSkillz is an open-source web application that provides an integrated authori
 
 ```bash
 # Clone the repository
-git clone https://github.com/uberskillz/uberskillsz.git
-cd uberskillsz
+git clone https://github.com/uberskills/uberskills.git
+cd uberskills
 
 # Install dependencies
 bun install
@@ -61,7 +61,7 @@ No Docker, no Postgres, no signup required.
 ## Project Structure
 
 ```
-uberskillsz/
+uberskills/
 ├── apps/
 │   └── web/                 # Next.js 15 web application
 ├── packages/
@@ -92,7 +92,7 @@ uberskillsz/
 
 | Variable | Required | Default | Description |
 |---|---|---|---|
-| `DATABASE_URL` | No | `file:data/uberskillz.db` | SQLite database file path |
+| `DATABASE_URL` | No | `file:data/uberskills.db` | SQLite database file path |
 | `ENCRYPTION_SECRET` | No | Auto-generated | AES-256 key for encrypting the API key. Generated on first run at `data/.secret` if not set |
 | `PORT` | No | `3000` | Development server port |
 | `NODE_ENV` | No | `development` | Environment mode |

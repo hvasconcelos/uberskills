@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-describe("@uberskillz/types", () => {
+describe("@uberskills/types", () => {
   it("exports all skill-related types", async () => {
     const types = await import("../index");
     // Type-only exports compile away at runtime, so the module itself must be importable.

@@ -1,7 +1,7 @@
 "use client";
 
-import type { ValidationError } from "@uberskillz/types";
-import { Input, Label, Textarea } from "@uberskillz/ui";
+import type { ValidationError } from "@uberskills/types";
+import { Input, Label, Textarea } from "@uberskills/ui";
 import { Loader2 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 

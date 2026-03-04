@@ -7,7 +7,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@uberskillz/ui";
+} from "@uberskills/ui";
 import type { ChatStatus, UIMessage } from "ai";
 import { AlertCircle, Key, Loader2, RefreshCw } from "lucide-react";
 import Link from "next/link";

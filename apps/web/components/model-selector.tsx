@@ -8,7 +8,7 @@ import {
   PopoverContent,
   PopoverTrigger,
   Skeleton,
-} from "@uberskillz/ui";
+} from "@uberskills/ui";
 import { AlertCircleIcon, CheckIcon, ChevronDownIcon, Loader2Icon, SearchIcon } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import { invalidateModelCache, type Model, useModels } from "@/hooks/use-models";

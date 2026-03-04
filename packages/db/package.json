@@ -1,5 +1,5 @@
 {
-  "name": "@uberskillz/db",
+  "name": "@uberskills/db",
   "version": "0.0.0",
   "private": true,
   "main": "./src/index.ts",
@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@libsql/client": "^0.17.0",
-    "@uberskillz/types": "workspace:*",
+    "@uberskills/types": "workspace:*",
     "better-sqlite3": "^12.6.2",
     "drizzle-orm": "^0.45.1",
     "nanoid": "^5.1.6"

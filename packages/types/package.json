@@ -1,5 +1,5 @@
 {
-  "name": "@uberskillz/types",
+  "name": "@uberskills/types",
   "version": "0.0.0",
   "private": true,
   "main": "./src/index.ts",

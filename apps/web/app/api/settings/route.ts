@@ -1,5 +1,5 @@
-import { getAllSettings, getDecryptedApiKey, setSetting } from "@uberskillz/db";
-import type { AppSettings, Theme } from "@uberskillz/types";
+import { getAllSettings, getDecryptedApiKey, setSetting } from "@uberskills/db";
+import type { AppSettings, Theme } from "@uberskills/types";
 import { type NextRequest, NextResponse } from "next/server";
 
 const DEFAULT_MODEL = "anthropic/claude-sonnet-4";

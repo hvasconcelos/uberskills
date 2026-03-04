@@ -8,7 +8,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@uberskillz/ui";
+} from "@uberskills/ui";
 import { Check, History, X } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 

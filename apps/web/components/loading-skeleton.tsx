@@ -1,4 +1,4 @@
-import { cn, Skeleton } from "@uberskillz/ui";
+import { cn, Skeleton } from "@uberskills/ui";
 
 interface LoadingSkeletonProps {
   /** Skeleton layout variant: card-grid, form, or table. */

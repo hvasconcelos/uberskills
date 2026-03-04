@@ -1,6 +1,6 @@
 "use client";
 
-import { Badge, Button, Separator } from "@uberskillz/ui";
+import { Badge, Button, Separator } from "@uberskills/ui";
 import { ChevronDown, ChevronRight, Clock, History, Loader2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";

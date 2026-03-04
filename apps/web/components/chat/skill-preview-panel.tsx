@@ -1,8 +1,8 @@
 "use client";
 
-import { parseSkillMd, validateSkill } from "@uberskillz/skill-engine";
-import type { Skill, ValidationError } from "@uberskillz/types";
-import { Button } from "@uberskillz/ui";
+import { parseSkillMd, validateSkill } from "@uberskills/skill-engine";
+import type { Skill, ValidationError } from "@uberskills/types";
+import { Button } from "@uberskills/ui";
 import type { UIMessage } from "ai";
 import { AlertCircle, AlertTriangle, Check, Copy, Loader2, RefreshCw, Save } from "lucide-react";
 import { useRouter } from "next/navigation";

@@ -3,7 +3,7 @@
 ## Monorepo Structure
 
 ```
-uberskillsz/
+uberskills/
 ├── apps/
 │   └── web/                          # Next.js 15 application
 │       ├── app/                      # App Router pages & routes
@@ -106,20 +106,20 @@ uberskillsz/
 
 ```
 apps/web
-  ├── @uberskillz/ui
-  ├── @uberskillz/db
-  ├── @uberskillz/skill-engine
-  └── @uberskillz/types
+  ├── @uberskills/ui
+  ├── @uberskills/db
+  ├── @uberskills/skill-engine
+  └── @uberskills/types
 
-@uberskillz/ui
-  └── @uberskillz/types
+@uberskills/ui
+  └── @uberskills/types
 
-@uberskillz/db
-  └── @uberskillz/types
+@uberskills/db
+  └── @uberskills/types
 
-@uberskillz/skill-engine
-  ├── @uberskillz/types
-  └── @uberskillz/db
+@uberskills/skill-engine
+  ├── @uberskills/types
+  └── @uberskills/db
 ```
 
 ## Next.js App Router Structure
@@ -211,7 +211,7 @@ apps/web
 3. AI generates a SKILL.md draft (YAML frontmatter + instructions).
 4. `skill-engine.parser` parses the AI output into structured data.
 5. User reviews and edits the parsed skill in a preview panel.
-6. On save, `/api/skills` (POST) stores the skill in SQLite via `@uberskillz/db`.
+6. On save, `/api/skills` (POST) stores the skill in SQLite via `@uberskills/db`.
 
 ### Skill Testing Flow (FR4)
 

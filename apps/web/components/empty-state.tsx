@@ -1,4 +1,4 @@
-import { cn } from "@uberskillz/ui";
+import { cn } from "@uberskills/ui";
 import type { LucideIcon } from "lucide-react";
 
 interface EmptyStateProps {

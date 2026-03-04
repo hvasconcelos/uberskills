@@ -1,4 +1,4 @@
-import { getSkillById, listTestRuns } from "@uberskillz/db";
+import { getSkillById, listTestRuns } from "@uberskills/db";
 import { NextResponse } from "next/server";
 
 type RouteContext = { params: Promise<{ id: string }> };

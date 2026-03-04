@@ -4,8 +4,8 @@ import {
   createVersion,
   listSkills,
   type SkillSortKey,
-} from "@uberskillz/db";
-import type { SkillStatus } from "@uberskillz/types";
+} from "@uberskills/db";
+import type { SkillStatus } from "@uberskills/types";
 import { NextResponse } from "next/server";
 
 const VALID_STATUSES: SkillStatus[] = ["draft", "ready", "deployed"];

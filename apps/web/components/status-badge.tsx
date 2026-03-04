@@ -1,5 +1,5 @@
-import type { SkillStatus } from "@uberskillz/types";
-import { Badge, cn } from "@uberskillz/ui";
+import type { SkillStatus } from "@uberskills/types";
+import { Badge, cn } from "@uberskills/ui";
 
 /** Human-readable labels for each skill lifecycle status. */
 const STATUS_LABELS: Record<SkillStatus, string> = {

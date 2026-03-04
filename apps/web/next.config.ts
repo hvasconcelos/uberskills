@@ -8,10 +8,10 @@ const DB_EXTERNALS =
 const nextConfig: NextConfig = {
   outputFileTracingRoot: path.join(__dirname, "../../"),
   transpilePackages: [
-    "@uberskillz/ui",
-    "@uberskillz/db",
-    "@uberskillz/skill-engine",
-    "@uberskillz/types",
+    "@uberskills/ui",
+    "@uberskills/db",
+    "@uberskills/skill-engine",
+    "@uberskills/types",
   ],
   serverExternalPackages: ["@libsql/client", "@libsql/hrana-client", "better-sqlite3", "libsql"],
   // biome-ignore lint/suspicious/noExplicitAny: webpack config types not available

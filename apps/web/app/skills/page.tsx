@@ -1,7 +1,7 @@
-import type { SkillSortKey } from "@uberskillz/db";
-import { listSkills } from "@uberskillz/db";
-import type { SkillStatus } from "@uberskillz/types";
-import { Button } from "@uberskillz/ui";
+import type { SkillSortKey } from "@uberskills/db";
+import { listSkills } from "@uberskills/db";
+import type { SkillStatus } from "@uberskills/types";
+import { Button } from "@uberskills/ui";
 import { Library, Plus, SearchX } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";

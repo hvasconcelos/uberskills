@@ -1,16 +1,16 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("@uberskillz/db", () => ({
+vi.mock("@uberskills/db", () => ({
   listSkills: vi.fn(),
   listFiles: vi.fn(),
 }));
 
-vi.mock("@uberskillz/skill-engine", () => ({
+vi.mock("@uberskills/skill-engine", () => ({
   generateSkillMd: vi.fn(),
 }));
 
-const { listSkills, listFiles } = await import("@uberskillz/db");
-const { generateSkillMd } = await import("@uberskillz/skill-engine");
+const { listSkills, listFiles } = await import("@uberskills/db");
+const { generateSkillMd } = await import("@uberskills/skill-engine");
 const mockedListSkills = vi.mocked(listSkills);
 const mockedListFiles = vi.mocked(listFiles);
 const mockedGenerateSkillMd = vi.mocked(generateSkillMd);
@@ -64,7 +64,7 @@ describe("GET /api/export", () => {
 
     expect(response.status).toBe(200);
     expect(response.headers.get("Content-Type")).toBe("application/zip");
-    expect(response.headers.get("Content-Disposition")).toContain("uberskillz-export-");
+    expect(response.headers.get("Content-Disposition")).toContain("uberskills-export-");
     expect(mockedGenerateSkillMd).toHaveBeenCalledOnce();
     expect(mockedListFiles).toHaveBeenCalledWith("1");
   });

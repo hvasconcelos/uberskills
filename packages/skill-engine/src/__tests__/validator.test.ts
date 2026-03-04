@@ -1,4 +1,4 @@
-import type { SkillFrontmatter } from "@uberskillz/types";
+import type { SkillFrontmatter } from "@uberskills/types";
 import { describe, expect, it } from "vitest";
 import { validateSkill } from "../validator";
 

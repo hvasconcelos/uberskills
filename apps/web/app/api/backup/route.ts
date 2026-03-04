@@ -28,7 +28,7 @@ export async function GET(): Promise<NextResponse> {
 
     const buffer = readFileSync(dbPath);
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-    const filename = `uberskillz-backup-${timestamp}.db`;
+    const filename = `uberskills-backup-${timestamp}.db`;
 
     return new NextResponse(buffer, {
       status: 200,

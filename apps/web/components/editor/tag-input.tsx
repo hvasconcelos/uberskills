@@ -1,6 +1,6 @@
 "use client";
 
-import { Badge, cn } from "@uberskillz/ui";
+import { Badge, cn } from "@uberskills/ui";
 import { X } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 

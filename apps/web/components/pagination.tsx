@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, cn } from "@uberskillz/ui";
+import { Button, cn } from "@uberskills/ui";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";

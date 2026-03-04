@@ -1,6 +1,6 @@
 "use client";
 
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@uberskillz/ui";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@uberskills/ui";
 import { AppSidebar } from "@/components/app-sidebar";
 
 export function AppLayout({ children }: { children: React.ReactNode }) {

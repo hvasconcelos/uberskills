@@ -12,7 +12,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
   useSidebar,
-} from "@uberskillz/ui";
+} from "@uberskills/ui";
 import {
   ChevronsLeftIcon,
   ChevronsRightIcon,
@@ -39,7 +39,7 @@ export function AppSidebar() {
       <SidebarHeader>
         <Link href="/" className="flex flex-col items-center gap-0.5 px-2 py-1">
           <span className="truncate text-xl font-bold tracking-tight">
-            {isCollapsed ? "U" : "UberSkillz"}
+            {isCollapsed ? "U" : "UberSkills"}
           </span>
           {!isCollapsed && <span className="text-sm text-muted-foreground">v0.0.0</span>}
         </Link>

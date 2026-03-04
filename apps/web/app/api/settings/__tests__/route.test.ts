@@ -1,13 +1,13 @@
 import type { NextRequest } from "next/server";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("@uberskillz/db", () => ({
+vi.mock("@uberskills/db", () => ({
   getAllSettings: vi.fn(),
   getDecryptedApiKey: vi.fn(),
   setSetting: vi.fn(),
 }));
 
-const { getAllSettings, getDecryptedApiKey, setSetting } = await import("@uberskillz/db");
+const { getAllSettings, getDecryptedApiKey, setSetting } = await import("@uberskills/db");
 const mockedGetAllSettings = vi.mocked(getAllSettings);
 const mockedGetDecryptedApiKey = vi.mocked(getDecryptedApiKey);
 const mockedSetSetting = vi.mocked(setSetting);

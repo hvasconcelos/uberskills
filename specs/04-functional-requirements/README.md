@@ -10,7 +10,7 @@
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│  UberSkillz           Skills    Import    Settings               │
+│  UberSkills           Skills    Import    Settings               │
 ├──────────────────────────────────────────────────────────────────┤
 │                                                                  │
 │  Skills Library                            [+ New Skill]         │
@@ -56,7 +56,7 @@
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│  UberSkillz           Skills    Import    Settings               │
+│  UberSkills           Skills    Import    Settings               │
 ├──────────────────────────────────────────────────────────────────┤
 │                                                                  │
 │  Create New Skill                        Model: [claude-sonnet▾] │
@@ -105,7 +105,7 @@
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│  UberSkillz           Skills    Import    Settings               │
+│  UberSkills           Skills    Import    Settings               │
 ├──────────────────────────────────────────────────────────────────┤
 │  ◄ Back to Library                                               │
 │                                                                  │
@@ -156,7 +156,7 @@
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│  UberSkillz           Skills    Import    Settings               │
+│  UberSkills           Skills    Import    Settings               │
 ├──────────────────────────────────────────────────────────────────┤
 │  ◄ Back to Editor                                                │
 │                                                                  │
@@ -258,7 +258,7 @@
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│  UberSkillz           Skills    Import    Settings               │
+│  UberSkills           Skills    Import    Settings               │
 ├──────────────────────────────────────────────────────────────────┤
 │                                                                  │
 │  Import Skills                                                   │
@@ -303,7 +303,7 @@
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│  UberSkillz           Skills    Import    Settings               │
+│  UberSkills           Skills    Import    Settings               │
 ├──────────────────────────────────────────────────────────────────┤
 │                                                                  │
 │  Settings                                                        │

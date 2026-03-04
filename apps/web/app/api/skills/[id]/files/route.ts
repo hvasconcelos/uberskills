@@ -1,5 +1,5 @@
-import { createFile, getSkillById, listFiles } from "@uberskillz/db";
-import type { FileType } from "@uberskillz/types";
+import { createFile, getSkillById, listFiles } from "@uberskills/db";
+import type { FileType } from "@uberskills/types";
 import { NextResponse } from "next/server";
 
 const VALID_FILE_TYPES: FileType[] = ["prompt", "resource"];

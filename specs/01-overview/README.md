@@ -2,7 +2,7 @@
 
 ## Vision
 
-**UberSkillz** is an open-source web application that empowers developers to design, test, and deploy [Claude Code Agent Skills](https://docs.anthropic.com/en/docs/claude-code/skills) through a visual, AI-assisted workflow. It replaces manual SKILL.md authoring with a structured editor, multi-model testing sandbox, and one-click deployment to `~/.claude/skills/`.
+**UberSkills** is an open-source web application that empowers developers to design, test, and deploy [Claude Code Agent Skills](https://docs.anthropic.com/en/docs/claude-code/skills) through a visual, AI-assisted workflow. It replaces manual SKILL.md authoring with a structured editor, multi-model testing sandbox, and one-click deployment to `~/.claude/skills/`.
 
 ## Problem Statement
 
@@ -13,7 +13,7 @@ Creating Claude Code skills today is entirely manual:
 - Iterating on prompt quality requires repeatedly editing files, restarting Claude Code, and invoking the skill.
 - No tooling exists for managing a library of skills, versioning changes, or sharing skills across machines.
 
-UberSkillz solves these problems by providing an integrated authoring environment purpose-built for the Claude Code skill format.
+UberSkills solves these problems by providing an integrated authoring environment purpose-built for the Claude Code skill format.
 
 ## Key Differentiators
 
@@ -165,7 +165,7 @@ The visual language is modeled after Vercel's templates/marketplace pages: white
 
 #### Navigation Bar
 - White background with a `1px` bottom border (`border-b`)
-- Logo (text mark "UberSkillz") on the left in bold
+- Logo (text mark "UberSkills") on the left in bold
 - Nav links: regular weight, `--muted-foreground` color, `--foreground` on hover/active
 - Full-width, content centered with `max-w-6xl`
 
@@ -223,7 +223,7 @@ The visual language is modeled after Vercel's templates/marketplace pages: white
 
 ## No Authentication
 
-UberSkillz is designed as a **single-user local development tool**. There is no login, signup, or user management. The OpenRouter API key is entered in the Settings page and stored encrypted in the local SQLite database. This keeps the architecture simple and aligns with the local-first philosophy.
+UberSkills is designed as a **single-user local development tool**. There is no login, signup, or user management. The OpenRouter API key is entered in the Settings page and stored encrypted in the local SQLite database. This keeps the architecture simple and aligns with the local-first philosophy.
 
 ## Cross-References
 

@@ -1,4 +1,4 @@
-import { getSkillBySlug } from "@uberskillz/db";
+import { getSkillBySlug } from "@uberskills/db";
 import { NextResponse } from "next/server";
 
 // GET /api/skills/check-slug?slug=my-skill&excludeId=abc123

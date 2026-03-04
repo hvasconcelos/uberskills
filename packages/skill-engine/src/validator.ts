@@ -1,4 +1,4 @@
-import type { SkillFrontmatter, ValidationError } from "@uberskillz/types";
+import type { SkillFrontmatter, ValidationError } from "@uberskills/types";
 
 const MAX_NAME_LENGTH = 100;
 const MAX_DESCRIPTION_LENGTH = 500;
