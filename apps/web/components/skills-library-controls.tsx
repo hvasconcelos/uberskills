@@ -1,6 +1,8 @@
 "use client";
 
 import {
+  Button,
+  cn,
   Input,
   Select,
   SelectContent,
@@ -8,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@uberskillz/ui";
-import { Search } from "lucide-react";
+import { LayoutGrid, List, Search } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -21,11 +23,30 @@ const STATUS_OPTIONS = [
 
 const DEBOUNCE_MS = 300;
 
+export type ViewMode = "grid" | "list";
+
+const STORAGE_KEY = "uberskillz-view-mode";
+
+/** Reads the persisted view preference from localStorage, defaulting to "grid". */
+function getStoredViewMode(): ViewMode {
+  if (typeof window === "undefined") return "grid";
+  const stored = localStorage.getItem(STORAGE_KEY);
+  return stored === "list" ? "list" : "grid";
+}
+
+interface SkillsLibraryControlsProps {
+  /** Current view mode — controlled by parent. */
+  viewMode: ViewMode;
+  /** Callback when the user toggles between grid and list view. */
+  onViewModeChange: (mode: ViewMode) => void;
+}
+
 /**
- * Client-side search input and status filter for the Skills Library page.
- * Syncs with URL search params so state is shareable and bookmarkable.
+ * Client-side search input, status filter, and view toggle for the Skills Library page.
+ * Syncs search/status with URL search params so state is shareable and bookmarkable.
+ * View mode is persisted in localStorage via the parent component.
  */
-export function SkillsLibraryControls() {
+export function SkillsLibraryControls({ viewMode, onViewModeChange }: SkillsLibraryControlsProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -101,6 +122,34 @@ export function SkillsLibraryControls() {
           ))}
         </SelectContent>
       </Select>
+
+      {/* Grid / List view toggle */}
+      <div className="flex gap-1 rounded-md border p-0.5" role="radiogroup" aria-label="View mode">
+        <Button
+          variant={viewMode === "grid" ? "secondary" : "ghost"}
+          size="icon"
+          className={cn("size-8", viewMode === "grid" && "shadow-sm")}
+          onClick={() => onViewModeChange("grid")}
+          aria-label="Grid view"
+          aria-checked={viewMode === "grid"}
+          role="radio"
+        >
+          <LayoutGrid className="size-4" />
+        </Button>
+        <Button
+          variant={viewMode === "list" ? "secondary" : "ghost"}
+          size="icon"
+          className={cn("size-8", viewMode === "list" && "shadow-sm")}
+          onClick={() => onViewModeChange("list")}
+          aria-label="List view"
+          aria-checked={viewMode === "list"}
+          role="radio"
+        >
+          <List className="size-4" />
+        </Button>
+      </div>
     </div>
   );
 }
+
+export { getStoredViewMode, STORAGE_KEY };
