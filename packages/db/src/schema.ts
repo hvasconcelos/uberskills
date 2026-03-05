@@ -128,6 +128,32 @@ export const testRuns = sqliteTable(
 // settings — application configuration key-value store
 // ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+// models — cached OpenRouter model catalog
+// ---------------------------------------------------------------------------
+
+export const models = sqliteTable(
+  "models",
+  {
+    id: text("id").primaryKey(),
+    slug: text("slug"),
+    name: text("name").notNull(),
+    provider: text("provider").notNull(),
+    contextLength: integer("context_length"),
+    inputPrice: text("input_price"),
+    outputPrice: text("output_price"),
+    modality: text("modality"),
+    syncedAt: integer("synced_at", { mode: "timestamp" })
+      .notNull()
+      .$defaultFn(() => new Date()),
+  },
+  (table) => [index("idx_models_provider").on(table.provider)],
+);
+
+// ---------------------------------------------------------------------------
+// settings — application configuration key-value store
+// ---------------------------------------------------------------------------
+
 export const settings = sqliteTable("settings", {
   key: text("key").primaryKey(),
   value: text("value").notNull(),

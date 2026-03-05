@@ -10,11 +10,6 @@ import {
   DialogTitle,
   DialogTrigger,
   Label,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
   Separator,
   Textarea,
 } from "@uberskills/ui";
@@ -23,8 +18,7 @@ import Link from "next/link";
 import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
 
-import type { Model } from "@/hooks/use-models";
-import { useModels } from "@/hooks/use-models";
+import { ModelSelector } from "@/components/model-selector";
 
 import { ArgumentInputs } from "./argument-inputs";
 
@@ -66,7 +60,6 @@ export function TestConfigPanel({
   onTestStart,
   isRunning,
 }: TestConfigPanelProps) {
-  const { models, isLoading: modelsLoading } = useModels();
   const [selectedModel, setSelectedModel] = useState(defaultModel);
   const [userMessage, setUserMessage] = useState("");
   const [argValues, setArgValues] = useState<Record<string, string>>({});
@@ -168,17 +161,8 @@ export function TestConfigPanel({
       <div className="flex-1 space-y-5 p-5">
         {/* Model selector */}
         <div className="space-y-1.5">
-          <Label htmlFor="test-model-select" className="text-sm font-medium">
-            Model
-          </Label>
-          <Select value={selectedModel} onValueChange={setSelectedModel} disabled={isBusy}>
-            <SelectTrigger id="test-model-select" className="w-full">
-              <SelectValue placeholder={modelsLoading ? "Loading models..." : "Select a model"} />
-            </SelectTrigger>
-            <SelectContent>
-              <ModelSelectOptions models={models} isLoading={modelsLoading} />
-            </SelectContent>
-          </Select>
+          <Label className="text-sm font-medium">Model</Label>
+          <ModelSelector value={selectedModel} onChange={setSelectedModel} disabled={isBusy} />
         </div>
 
         {/* System prompt preview dialog */}
@@ -249,36 +233,4 @@ export function TestConfigPanel({
       </div>
     </div>
   );
-}
-
-// ---------------------------------------------------------------------------
-// Model select dropdown options -- loading, empty, and populated states
-// ---------------------------------------------------------------------------
-
-function ModelSelectOptions({
-  models,
-  isLoading,
-}: {
-  models: Model[];
-  isLoading: boolean;
-}): React.ReactNode {
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-4">
-        <Loader2 className="size-4 animate-spin text-muted-foreground" />
-      </div>
-    );
-  }
-
-  if (models.length === 0) {
-    return (
-      <div className="px-2 py-4 text-center text-sm text-muted-foreground">No models available</div>
-    );
-  }
-
-  return models.map((model) => (
-    <SelectItem key={model.id} value={model.id}>
-      {model.name}
-    </SelectItem>
-  ));
 }

@@ -1,12 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 /** A model available via OpenRouter. */
 export interface Model {
   id: string;
+  slug?: string;
   name: string;
   provider: string;
+  contextLength?: number | null;
+  inputPrice?: string | null;
+  outputPrice?: string | null;
+  modality?: string | null;
 }
 
 /** Return type of the useModels() hook. */
@@ -14,6 +19,7 @@ export interface UseModelsReturn {
   models: Model[];
   isLoading: boolean;
   error: string | null;
+  refetch: () => void;
 }
 
 /** How long the model list stays cached (5 minutes). */
@@ -39,46 +45,50 @@ export function useModels(): UseModelsReturn {
   // Prevent duplicate concurrent fetches.
   const fetchingRef = useRef(false);
 
-  useEffect(() => {
-    async function fetchModels(): Promise<void> {
-      // Serve from cache if still valid.
-      if (cachedModels && Date.now() < cacheExpiresAt) {
-        setModels(cachedModels);
+  const fetchModels = useCallback(async (skipCache = false): Promise<void> => {
+    if (!skipCache && cachedModels && Date.now() < cacheExpiresAt) {
+      setModels(cachedModels);
+      return;
+    }
+
+    if (fetchingRef.current) return;
+    fetchingRef.current = true;
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch("/api/models");
+
+      if (!res.ok) {
+        const data = (await res.json().catch(() => ({}))) as { error?: string };
+        setError(data.error ?? `Failed to fetch models (${res.status})`);
+        setModels([]);
         return;
       }
 
-      if (fetchingRef.current) return;
-      fetchingRef.current = true;
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        const res = await fetch("/api/models");
-
-        if (!res.ok) {
-          const data = (await res.json().catch(() => ({}))) as { error?: string };
-          setError(data.error ?? `Failed to fetch models (${res.status})`);
-          setModels([]);
-          return;
-        }
-
-        const data = (await res.json()) as { models: Model[] };
-        cachedModels = data.models;
-        cacheExpiresAt = Date.now() + CACHE_TTL_MS;
-        setModels(data.models);
-      } catch {
-        setError("Could not reach the server. Check your network connection.");
-        setModels([]);
-      } finally {
-        setIsLoading(false);
-        fetchingRef.current = false;
-      }
+      const data = (await res.json()) as { models: Model[] };
+      cachedModels = data.models;
+      cacheExpiresAt = Date.now() + CACHE_TTL_MS;
+      setModels(data.models);
+    } catch {
+      setError("Could not reach the server. Check your network connection.");
+      setModels([]);
+    } finally {
+      setIsLoading(false);
+      fetchingRef.current = false;
     }
-
-    fetchModels();
   }, []);
 
-  return { models, isLoading, error };
+  useEffect(() => {
+    fetchModels();
+  }, [fetchModels]);
+
+  const refetch = useCallback(() => {
+    invalidateModelCache();
+    fetchModels(true);
+  }, [fetchModels]);
+
+  return { models, isLoading, error, refetch };
 }
 
 /** Invalidates the model cache, forcing the next useModels() call to refetch. */

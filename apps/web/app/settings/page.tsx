@@ -8,6 +8,12 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
   Dialog,
   DialogClose,
   DialogContent,
@@ -16,15 +22,15 @@ import {
   DialogHeader,
   DialogTitle,
   Input,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   Separator,
 } from "@uberskills/ui";
 import {
+  Check,
   CheckCircle2,
+  ChevronsUpDown,
   Database,
   Download,
   Eye,
@@ -33,6 +39,7 @@ import {
   Loader2,
   Monitor,
   Moon,
+  RefreshCw,
   Settings2,
   Sun,
   Upload,
@@ -70,7 +77,8 @@ export default function SettingsPage() {
   const savingRef = useRef(false);
 
   // Model list via shared hook
-  const { models, isLoading: modelsLoading } = useModels();
+  const { models, isLoading: modelsLoading, refetch: refetchModels } = useModels();
+  const [syncing, setSyncing] = useState(false);
 
   // Data management state
   const [exporting, setExporting] = useState(false);
@@ -189,6 +197,26 @@ export default function SettingsPage() {
     },
     [setTheme, saveSetting],
   );
+
+  /** Reloads models from OpenRouter into the database cache. */
+  const handleSyncModels = useCallback(async () => {
+    setSyncing(true);
+    try {
+      const res = await fetch("/api/models/sync", { method: "POST" });
+      if (!res.ok) {
+        const err = (await res.json()) as { error: string };
+        throw new Error(err.error ?? "Failed to sync models");
+      }
+      const data = (await res.json()) as { synced: number };
+      toast.success(`Reloaded ${data.synced} models`);
+      refetchModels();
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to sync models";
+      toast.error(message);
+    } finally {
+      setSyncing(false);
+    }
+  }, [refetchModels]);
 
   /** Downloads a file from the given endpoint and triggers a browser download. */
   const fetchAndDownload = useCallback(
@@ -426,21 +454,32 @@ export default function SettingsPage() {
         <CardContent className="space-y-6">
           {/* Default Model */}
           <div className="space-y-2">
-            <label htmlFor="default-model" className="text-sm font-medium">
-              Default Model
-            </label>
-            <Select
+            <div className="flex items-center gap-2">
+              <label htmlFor="default-model" className="text-sm font-medium">
+                Default Model
+              </label>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-6 w-6 p-0"
+                onClick={handleSyncModels}
+                disabled={syncing || !hasKey}
+                aria-label="Reload models from OpenRouter"
+              >
+                {syncing ? (
+                  <Loader2 className="size-3.5 animate-spin" />
+                ) : (
+                  <RefreshCw className="size-3.5" />
+                )}
+              </Button>
+            </div>
+            <ModelCombobox
+              models={models}
+              loading={modelsLoading}
               value={settings?.defaultModel ?? ""}
-              onValueChange={(value) => saveSetting("defaultModel", value)}
+              onSelect={(value) => saveSetting("defaultModel", value)}
               disabled={!hasKey}
-            >
-              <SelectTrigger id="default-model" className="w-full">
-                <SelectValue placeholder={hasKey ? "Select a model..." : "Add an API key first"} />
-              </SelectTrigger>
-              <SelectContent>
-                <ModelSelectOptions models={models} loading={modelsLoading} />
-              </SelectContent>
-            </Select>
+            />
             <p className="text-sm text-muted-foreground">
               The model used by default when testing skills.
             </p>
@@ -630,32 +669,74 @@ function ThemeButton({ value, label, icon, current, onSelect }: ThemeButtonProps
   );
 }
 
-interface ModelSelectOptionsProps {
+interface ModelComboboxProps {
   models: Model[];
   loading: boolean;
+  value: string;
+  onSelect: (value: string) => void;
+  disabled?: boolean;
 }
 
-/** Renders the model dropdown content -- avoids a nested ternary in JSX. */
-function ModelSelectOptions({ models, loading }: ModelSelectOptionsProps) {
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-4">
-        <Loader2 className="size-4 animate-spin text-muted-foreground" />
-      </div>
-    );
-  }
+/** Searchable model combobox using Command + Popover. */
+function ModelCombobox({ models, loading, value, onSelect, disabled }: ModelComboboxProps) {
+  const [open, setOpen] = useState(false);
+  const selectedModel = models.find((m) => m.id === value);
 
-  if (models.length === 0) {
-    return (
-      <div className="px-2 py-4 text-center text-sm text-muted-foreground">No models available</div>
-    );
-  }
-
-  return models.map((model) => (
-    <SelectItem key={model.id} value={model.id}>
-      {model.name}
-    </SelectItem>
-  ));
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          disabled={disabled}
+          className="w-full justify-between font-normal"
+        >
+          <span className="truncate">
+            {selectedModel
+              ? selectedModel.name
+              : disabled
+                ? "Add an API key first"
+                : "Select a model..."}
+          </span>
+          <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
+        <Command>
+          <CommandInput placeholder="Search models..." />
+          <CommandList>
+            {loading ? (
+              <div className="flex items-center justify-center py-6">
+                <Loader2 className="size-4 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <>
+                <CommandEmpty>No models found.</CommandEmpty>
+                <CommandGroup>
+                  {models.map((model) => (
+                    <CommandItem
+                      key={model.id}
+                      value={model.name}
+                      onSelect={() => {
+                        onSelect(model.id);
+                        setOpen(false);
+                      }}
+                    >
+                      <Check
+                        className={`mr-2 size-4 ${value === model.id ? "opacity-100" : "opacity-0"}`}
+                      />
+                      {model.name}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </>
+            )}
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  );
 }
 
 /** Triggers a browser download for a blob. */

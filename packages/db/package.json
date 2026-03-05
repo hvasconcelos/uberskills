@@ -9,6 +9,7 @@
     "test": "vitest run",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "bun run src/migrate.ts",
+    "db:reset": "bun run src/reset.ts",
     "db:seed": "bun run src/seed.ts"
   },
   "dependencies": {

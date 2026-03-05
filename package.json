@@ -20,7 +20,8 @@
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
-    "db:migrate": "turbo run db:migrate"
+    "db:migrate": "turbo run db:migrate",
+    "db:reset": "turbo run db:reset"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.5",

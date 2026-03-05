@@ -14,6 +14,17 @@ export {
 } from "./components/card";
 export { Checkbox } from "./components/checkbox";
 export {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "./components/command";
+export {
   Dialog,
   DialogClose,
   DialogContent,

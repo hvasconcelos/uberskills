@@ -1,19 +1,12 @@
 "use client";
 
-import {
-  Button,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@uberskills/ui";
+import { Button } from "@uberskills/ui";
 import type { ChatStatus, UIMessage } from "ai";
 import { AlertCircle, Key, Loader2, RefreshCw } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useRef } from "react";
 
-import type { Model } from "@/hooks/use-models";
+import { ModelSelector } from "@/components/model-selector";
 
 import { ChatInput } from "./chat-input";
 import { ChatMessage } from "./chat-message";
@@ -27,8 +20,6 @@ interface ChatPanelProps {
   stop: () => void;
   input: string;
   onInputChange: (value: string) => void;
-  models: Model[];
-  modelsLoading: boolean;
   selectedModel: string;
   onModelChange: (model: string) => void;
   hasApiKey: boolean;
@@ -48,8 +39,6 @@ export function ChatPanel({
   stop,
   input,
   onInputChange,
-  models,
-  modelsLoading,
   selectedModel,
   onModelChange,
   hasApiKey,
@@ -98,20 +87,8 @@ export function ChatPanel({
     <div className="flex h-full flex-col">
       {/* Model selector at top */}
       <div className="shrink-0 border-b border-border p-3">
-        <label
-          htmlFor="model-select"
-          className="mb-1 block text-xs font-medium text-muted-foreground"
-        >
-          Model
-        </label>
-        <Select value={selectedModel} onValueChange={onModelChange} disabled={isStreaming}>
-          <SelectTrigger id="model-select" className="w-full">
-            <SelectValue placeholder={modelsLoading ? "Loading models..." : "Select a model"} />
-          </SelectTrigger>
-          <SelectContent>
-            <ModelSelectOptions models={models} isLoading={modelsLoading} />
-          </SelectContent>
-        </Select>
+        <label className="mb-1 block text-xs font-medium text-muted-foreground">Model</label>
+        <ModelSelector value={selectedModel} onChange={onModelChange} disabled={isStreaming} />
       </div>
 
       {/* Message list -- scrollable */}
@@ -193,34 +170,6 @@ export function ChatPanel({
       </div>
     </div>
   );
-}
-
-function ModelSelectOptions({
-  models,
-  isLoading,
-}: {
-  models: Model[];
-  isLoading: boolean;
-}): React.ReactNode {
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-4">
-        <Loader2 className="size-4 animate-spin text-muted-foreground" />
-      </div>
-    );
-  }
-
-  if (models.length === 0) {
-    return (
-      <div className="px-2 py-4 text-center text-sm text-muted-foreground">No models available</div>
-    );
-  }
-
-  return models.map((model) => (
-    <SelectItem key={model.id} value={model.id}>
-      {model.name}
-    </SelectItem>
-  ));
 }
 
 function resolveErrorText(error: Error | undefined): string | null {

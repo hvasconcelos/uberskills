@@ -10,7 +10,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ChatPanel } from "@/components/chat/chat-panel";
 import { SkillPreviewPanel } from "@/components/chat/skill-preview-panel";
 import { PageHeader } from "@/components/page-header";
-import { useModels } from "@/hooks/use-models";
 
 /**
  * AI Skill Creation page at /skills/new.
@@ -28,8 +27,6 @@ export default function NewSkillPage() {
   selectedModelRef.current = selectedModel;
   const [hasApiKey, setHasApiKey] = useState<boolean | null>(null);
   const [input, setInput] = useState("");
-
-  const { models, isLoading: modelsLoading } = useModels();
 
   useEffect(() => {
     async function checkApiKey() {
@@ -99,8 +96,6 @@ export default function NewSkillPage() {
             stop={stop}
             input={input}
             onInputChange={setInput}
-            models={models}
-            modelsLoading={modelsLoading}
             selectedModel={selectedModel}
             onModelChange={setSelectedModel}
             hasApiKey={hasApiKey}

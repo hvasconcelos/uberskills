@@ -1,95 +1,45 @@
-import { getDecryptedApiKey } from "@uberskills/db";
+import { isModelCacheEmpty, listModels } from "@uberskills/db";
 import { NextResponse } from "next/server";
 
-/** Model shape returned to the client. */
-export interface OpenRouterModel {
-  id: string;
-  name: string;
-  provider: string;
-}
-
-/** Raw model shape from the OpenRouter /api/v1/models response. */
-interface OpenRouterRawModel {
-  id: string;
-  name: string;
-  architecture?: { modality?: string };
-}
+import { fetchAndSyncModels } from "@/lib/sync-models";
 
 /**
- * Checks whether a model supports text output (i.e. is chat-capable).
- * OpenRouter uses modality strings like "text->text", "text+image->text".
- * Models without modality info are included by default.
- */
-function isChatCapable(model: OpenRouterRawModel): boolean {
-  const modality = model.architecture?.modality;
-  if (!modality) return true;
-  return modality.split("->").pop()?.includes("text") ?? false;
-}
-
-/** Extracts the provider prefix from a model id (e.g. "anthropic/claude-3" → "anthropic"). */
-function extractProvider(modelId: string): string {
-  const slashIndex = modelId.indexOf("/");
-  return slashIndex > 0 ? modelId.slice(0, slashIndex) : modelId;
-}
-
-/**
- * GET /api/models -- Fetches available models from OpenRouter.
+ * GET /api/models -- Returns cached models from the database.
  *
- * Requires a valid API key stored in settings. Returns chat-capable models
- * sorted by provider then name, each with { id, name, provider }.
+ * On first access (empty cache), auto-syncs from OpenRouter.
+ * Subsequent requests are instant DB reads.
  */
 export async function GET(): Promise<NextResponse> {
   try {
-    const apiKey = getDecryptedApiKey();
-    if (!apiKey) {
-      return NextResponse.json(
-        { error: "No API key configured. Add one in Settings first.", code: "NO_API_KEY" },
-        { status: 401 },
-      );
+    // Auto-populate on first access
+    if (isModelCacheEmpty()) {
+      try {
+        await fetchAndSyncModels();
+      } catch {
+        // Silent failure -- return empty list if sync fails
+      }
     }
 
-    const res = await fetch("https://openrouter.ai/api/v1/models", {
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "HTTP-Referer": "https://uberskills.dev",
-        "X-Title": "UberSkills",
-      },
-    });
+    const rows = listModels();
 
-    if (!res.ok) {
-      if (res.status === 401 || res.status === 403) {
-        return NextResponse.json(
-          { error: "Invalid API key", code: "INVALID_KEY" },
-          { status: 401 },
-        );
-      }
-      if (res.status === 429) {
-        return NextResponse.json(
-          { error: "Rate limited by OpenRouter. Try again shortly.", code: "RATE_LIMITED" },
-          { status: 429 },
-        );
-      }
-      return NextResponse.json(
-        { error: `OpenRouter returned status ${res.status}`, code: "UPSTREAM_ERROR" },
-        { status: 502 },
-      );
-    }
-
-    const data = (await res.json()) as { data: OpenRouterRawModel[] };
-
-    const models: OpenRouterModel[] = (data.data ?? [])
-      .filter(isChatCapable)
-      .map((m) => ({ id: m.id, name: m.name, provider: extractProvider(m.id) }))
+    const models = rows
+      .map((r) => ({
+        id: r.id,
+        slug: r.slug,
+        name: r.name,
+        provider: r.provider,
+        contextLength: r.contextLength,
+        inputPrice: r.inputPrice,
+        outputPrice: r.outputPrice,
+        modality: r.modality,
+      }))
       .sort((a, b) => a.provider.localeCompare(b.provider) || a.name.localeCompare(b.name));
 
     return NextResponse.json({ models });
   } catch {
     return NextResponse.json(
-      {
-        error: "Could not reach OpenRouter. Check your network connection.",
-        code: "NETWORK_ERROR",
-      },
-      { status: 502 },
+      { error: "Failed to load models", code: "INTERNAL_ERROR" },
+      { status: 500 },
     );
   }
 }
