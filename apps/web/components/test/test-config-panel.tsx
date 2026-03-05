@@ -64,6 +64,7 @@ export function TestConfigPanel({
   const [selectedModel, setSelectedModel] = useState(defaultModel);
   const [userMessage, setUserMessage] = useState("");
   const [argValues, setArgValues] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Detect $VARIABLE_NAME placeholders in skill content
   const placeholders = useMemo(() => detectPlaceholders(skill.content), [skill.content]);
@@ -74,11 +75,13 @@ export function TestConfigPanel({
     [skill.content, argValues],
   );
 
-  const canRun = hasApiKey && selectedModel && userMessage.trim().length > 0 && !isRunning;
+  const isBusy = isRunning || isSubmitting;
+  const canRun = hasApiKey && selectedModel && userMessage.trim().length > 0 && !isBusy;
 
   const handleRunTest = useCallback(async () => {
     if (!canRun) return;
 
+    setIsSubmitting(true);
     try {
       const res = await fetch("/api/test", {
         method: "POST",
@@ -111,6 +114,8 @@ export function TestConfigPanel({
       onTestStart({ testRunId, reader });
     } catch {
       toast.error("Failed to start test. Check your network connection.");
+    } finally {
+      setIsSubmitting(false);
     }
   }, [canRun, skill.id, selectedModel, userMessage, argValues, placeholders.length, onTestStart]);
 
@@ -160,7 +165,7 @@ export function TestConfigPanel({
           <Label htmlFor="test-model-select" className="text-sm font-medium">
             Model
           </Label>
-          <Select value={selectedModel} onValueChange={setSelectedModel} disabled={isRunning}>
+          <Select value={selectedModel} onValueChange={setSelectedModel} disabled={isBusy}>
             <SelectTrigger id="test-model-select" className="w-full">
               <SelectValue placeholder={modelsLoading ? "Loading models..." : "Select a model"} />
             </SelectTrigger>
@@ -185,7 +190,7 @@ export function TestConfigPanel({
           placeholders={placeholders}
           values={argValues}
           onChange={setArgValues}
-          disabled={isRunning}
+          disabled={isBusy}
         />
 
         {/* User message textarea */}
@@ -199,7 +204,7 @@ export function TestConfigPanel({
             onChange={(e) => setUserMessage(e.target.value)}
             placeholder="Enter the test prompt to send alongside the system prompt..."
             className="min-h-[120px] resize-y font-mono text-sm"
-            disabled={isRunning}
+            disabled={isBusy}
           />
         </div>
       </div>
@@ -207,7 +212,7 @@ export function TestConfigPanel({
       {/* Run test button pinned at bottom */}
       <div className="shrink-0 border-t border-border p-5">
         <Button className="w-full" onClick={handleRunTest} disabled={!canRun}>
-          {isRunning ? (
+          {isBusy ? (
             <>
               <Loader2 className="size-4 animate-spin" />
               Running...
