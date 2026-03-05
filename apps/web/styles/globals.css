@@ -132,12 +132,12 @@
   --shadow-card: 0 1px 3px oklch(0.4 0.01 265 / 0.05), 0 1px 2px oklch(0.4 0.01 265 / 0.03);
 
   /* Sidebar */
-  --sidebar: oklch(0.985 0.003 265);
+  --sidebar: oklch(1 0 0);
   --sidebar-foreground: oklch(0.345 0.015 265);
   --sidebar-primary: oklch(0.585 0.233 277);
   --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.955 0.025 277);
-  --sidebar-accent-foreground: oklch(0.37 0.15 277);
+  --sidebar-accent: oklch(0.95 0 0);
+  --sidebar-accent-foreground: oklch(0.25 0 0);
   --sidebar-border: oklch(0.905 0.008 265);
   --sidebar-ring: oklch(0.585 0.233 277);
 }
