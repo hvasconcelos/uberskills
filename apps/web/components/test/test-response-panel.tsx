@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Markdown from "react-markdown";
 
 import type { TestMetricsData } from "./test-metrics";
 import { TestMetrics } from "./test-metrics";
@@ -58,20 +59,24 @@ export function TestResponsePanel({
   return (
     <div className="flex h-full flex-col gap-4">
       <div ref={scrollRef} className="flex-1 overflow-y-auto">
-        <div
-          className="font-mono text-sm leading-relaxed whitespace-pre-wrap"
-          role="log"
-          aria-live="polite"
-          aria-atomic={false}
-        >
-          {streamedText}
-          {isRunning && (
+        {isRunning ? (
+          <div
+            className="font-mono text-sm leading-relaxed whitespace-pre-wrap"
+            role="log"
+            aria-live="polite"
+            aria-atomic={false}
+          >
+            {streamedText}
             <span
               className="inline-block h-4 w-1.5 animate-pulse bg-foreground motion-reduce:animate-none motion-reduce:opacity-50"
               aria-hidden="true"
             />
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="prose prose-sm max-w-none dark:prose-invert">
+            <Markdown>{streamedText}</Markdown>
+          </div>
+        )}
       </div>
 
       {!isRunning && metrics && <TestMetrics metrics={metrics} />}

@@ -15,6 +15,7 @@
     "@libsql/client": "^0.17.0",
     "@openrouter/ai-sdk-provider": "^2.2.3",
     "@tailwindcss/postcss": "^4.2.1",
+    "@tailwindcss/typography": "^0.5.19",
     "@uberskills/db": "workspace:*",
     "@uberskills/skill-engine": "workspace:*",
     "@uberskills/types": "workspace:*",
@@ -29,6 +30,7 @@
     "next-themes": "^0.4.6",
     "react": "^19",
     "react-dom": "^19",
+    "react-markdown": "^10.1.0",
     "sonner": "^2.0.7",
     "tailwindcss": "^4.2.1"
   },
