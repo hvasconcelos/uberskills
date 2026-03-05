@@ -36,7 +36,7 @@ export function ChatInput({
   );
 
   return (
-    <div className="flex gap-2">
+    <div className="flex items-end gap-2">
       <Textarea
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -51,7 +51,7 @@ export function ChatInput({
         onClick={onSubmit}
         disabled={!canSend}
         size="icon"
-        className="shrink-0 self-end"
+        className="shrink-0 h-[44px] w-[44px]"
         aria-label={isStreaming ? "Sending..." : "Send message"}
       >
         {isStreaming ? <Loader2 className="size-4 animate-spin" /> : <Send className="size-4" />}
