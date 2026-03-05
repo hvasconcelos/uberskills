@@ -3,6 +3,12 @@
 import { detectPlaceholders, substitute } from "@uberskills/skill-engine";
 import {
   Button,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
   Label,
   Select,
   SelectContent,
@@ -12,7 +18,7 @@ import {
   Separator,
   Textarea,
 } from "@uberskills/ui";
-import { ArrowLeft, Key, Loader2, Play } from "lucide-react";
+import { ArrowLeft, Eye, Key, Loader2, Play } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -175,14 +181,30 @@ export function TestConfigPanel({
           </Select>
         </div>
 
-        {/* System prompt display (read-only) */}
+        {/* System prompt preview dialog */}
         <div className="space-y-1.5">
           <Label className="text-sm font-medium">Resolved System Prompt</Label>
-          <div className="max-h-48 overflow-y-auto rounded-md border border-border bg-muted/50 p-3 font-mono text-xs leading-relaxed whitespace-pre-wrap">
-            {resolvedPrompt || (
-              <span className="text-muted-foreground italic">No skill content</span>
-            )}
-          </div>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm" className="w-full justify-start gap-2">
+                <Eye className="size-4 text-muted-foreground" />
+                <span className="truncate text-muted-foreground">View Resolved Prompt</span>
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="flex max-h-[80vh] max-w-2xl flex-col overflow-hidden">
+              <DialogHeader>
+                <DialogTitle>Resolved System Prompt</DialogTitle>
+                <DialogDescription>
+                  The system prompt sent to the model with all arguments substituted.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="min-h-0 flex-1 overflow-y-auto rounded-md border border-border bg-muted/50 p-4 font-mono text-xs leading-relaxed whitespace-pre-wrap">
+                {resolvedPrompt || (
+                  <span className="text-muted-foreground italic">No skill content</span>
+                )}
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
 
         {/* Argument inputs for detected placeholders */}
@@ -203,7 +225,7 @@ export function TestConfigPanel({
             value={userMessage}
             onChange={(e) => setUserMessage(e.target.value)}
             placeholder="Enter the test prompt to send alongside the system prompt..."
-            className="min-h-[120px] resize-y font-mono text-sm"
+            className="min-h-[120px] resize-none font-mono text-sm"
             disabled={isBusy}
           />
         </div>
