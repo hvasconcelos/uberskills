@@ -126,7 +126,7 @@ describe("POST /api/export/deploy", () => {
     // Verify files were passed to deployToFilesystem
     const callArgs = mockedDeployToFilesystem.mock.calls[0];
     expect(callArgs?.[1]).toHaveLength(1);
-    expect(callArgs?.[1]?.[0]?.path).toBe("prompts/setup.md");
+    expect(callArgs?.[1]?.[0]?.path).toBe("scripts/setup.md");
   });
 
   it("returns 400 on path traversal error", async () => {
