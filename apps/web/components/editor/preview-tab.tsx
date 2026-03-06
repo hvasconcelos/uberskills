@@ -180,8 +180,8 @@ export function PreviewTab({ skill, files, validationErrors }: PreviewTabProps) 
         {files.length > 0 && (
           <p className="text-xs text-muted-foreground">
             {files.length} {files.length === 1 ? "file" : "files"} &middot;{" "}
-            {files.filter((f) => f.type === "prompt").length} prompt,{" "}
-            {files.filter((f) => f.type === "resource").length} resource
+            {files.filter((f) => f.type === "script").length} script,{" "}
+            {files.filter((f) => f.type === "reference").length} reference
           </p>
         )}
       </div>

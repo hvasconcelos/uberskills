@@ -79,7 +79,7 @@ describe("schema", () => {
 
     it("type column uses enum constraint", () => {
       const typeCol = config.columns.find((c) => c.name === "type");
-      expect(typeCol?.enumValues).toEqual(["prompt", "resource"]);
+      expect(typeCol?.enumValues).toEqual(["script", "reference"]);
     });
   });
 

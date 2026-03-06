@@ -11,7 +11,7 @@ export interface SystemPromptFile {
 export interface BuildSystemPromptOptions {
   /** The resolved skill content (after placeholder substitution). */
   resolvedContent: string;
-  /** Skill files (prompts and resources) to include. */
+  /** Skill files (scripts and references) to include. */
   files: SystemPromptFile[];
   /**
    * Max lines before an unreferenced resource file is summarized instead of
@@ -62,12 +62,12 @@ export function isFileReferenced(resolvedContent: string, filePath: string): boo
  * Builds a test system prompt with progressive disclosure for skill files.
  *
  * Strategy:
- * - **Prompt files** (type: "prompt") are always inlined in full — these are
+ * - **Script files** (type: "script") are always inlined in full — these are
  *   core instructions/templates the AI needs to function.
- * - **Referenced resource files** — resource files whose path or filename
+ * - **Referenced reference files** — reference files whose path or filename
  *   appears in the skill content are always inlined in full, since the skill
  *   explicitly depends on them.
- * - **Unreferenced resource files** use progressive disclosure:
+ * - **Unreferenced reference files** use progressive disclosure:
  *   - Small files (≤ threshold lines) are inlined in full.
  *   - Large files show a preview (first N lines) plus a summary noting
  *     the total line count and that the content was truncated.
@@ -81,11 +81,11 @@ export function buildTestSystemPrompt(options: BuildSystemPromptOptions): BuildS
     return { systemPrompt: resolvedContent, inlinedCount: 0, summarizedCount: 0 };
   }
 
-  // Separate prompt files from resource files for ordering:
-  // prompts first (they're core instructions), then resources.
-  const promptFiles = files.filter((f) => f.type === "prompt");
-  const resourceFiles = files.filter((f) => f.type === "resource");
-  const orderedFiles = [...promptFiles, ...resourceFiles];
+  // Separate script files from reference files for ordering:
+  // scripts first (they're core instructions), then references.
+  const scriptFiles = files.filter((f) => f.type === "script");
+  const referenceFiles = files.filter((f) => f.type === "reference");
+  const orderedFiles = [...scriptFiles, ...referenceFiles];
 
   let inlinedCount = 0;
   let summarizedCount = 0;
@@ -96,12 +96,12 @@ export function buildTestSystemPrompt(options: BuildSystemPromptOptions): BuildS
     const totalLines = lines.length;
 
     // Determine whether to inline or summarize:
-    // - Prompt files: always inline
-    // - Resource files referenced in content: always inline (the skill needs them)
-    // - Unreferenced resource files: inline if small, summarize if large
-    const referenced = file.type === "resource" && isFileReferenced(resolvedContent, file.path);
+    // - Script files: always inline
+    // - Reference files referenced in content: always inline (the skill needs them)
+    // - Unreferenced reference files: inline if small, summarize if large
+    const referenced = file.type === "reference" && isFileReferenced(resolvedContent, file.path);
     const shouldSummarize =
-      file.type === "resource" && !referenced && totalLines > resourceInlineThreshold;
+      file.type === "reference" && !referenced && totalLines > resourceInlineThreshold;
 
     if (shouldSummarize) {
       const preview = lines.slice(0, previewLines).join("\n");

@@ -87,7 +87,7 @@ export function FilesTab({ skillId, files, onChanged }: FilesTabProps) {
         <div>
           <h2 className="text-section-heading">Files</h2>
           <p className="text-sm text-muted-foreground">
-            Manage additional prompt and resource files for this skill.
+            Manage additional script and reference files for this skill.
           </p>
         </div>
         <Button size="sm" onClick={handleAdd}>
@@ -101,7 +101,7 @@ export function FilesTab({ skillId, files, onChanged }: FilesTabProps) {
         <EmptyState
           icon={FolderOpen}
           title="No additional files"
-          description="Add prompt files for sub-instructions or resource files for templates, examples, and reference data."
+          description="Add script files for executable code or reference files for templates, examples, and documentation."
           action={
             <Button size="sm" onClick={handleAdd}>
               <Plus className="size-4" />
@@ -165,8 +165,8 @@ export function FilesTab({ skillId, files, onChanged }: FilesTabProps) {
       {files.length > 0 && (
         <p className="text-xs text-muted-foreground">
           {files.length} {files.length === 1 ? "file" : "files"} &middot;{" "}
-          {files.filter((f) => f.type === "prompt").length} prompt,{" "}
-          {files.filter((f) => f.type === "resource").length} resource
+          {files.filter((f) => f.type === "script").length} script,{" "}
+          {files.filter((f) => f.type === "reference").length} reference
         </p>
       )}
 

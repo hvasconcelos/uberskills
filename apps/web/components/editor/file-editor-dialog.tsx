@@ -20,7 +20,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import type { EditorFileData } from "./editor-shell";
 
-type FileType = "prompt" | "resource";
+type FileType = "script" | "reference";
 
 interface FileEditorDialogProps {
   /** Skill ID the file belongs to. */
@@ -39,8 +39,8 @@ const PATH_TRAVERSAL_PATTERN = /(?:^|\/)\.\.(?:\/|$)/;
 
 /** Prefix hint shown before the path input based on file type. */
 const TYPE_PREFIX: Record<FileType, string> = {
-  prompt: "prompts/",
-  resource: "resources/",
+  script: "scripts/",
+  reference: "references/",
 };
 
 export function FileEditorDialog({
@@ -54,7 +54,7 @@ export function FileEditorDialog({
   const isEditing = file !== null;
 
   const [path, setPath] = useState("");
-  const [type, setType] = useState<FileType>("prompt");
+  const [type, setType] = useState<FileType>("script");
   const [content, setContent] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -68,7 +68,7 @@ export function FileEditorDialog({
         setContent(file.content);
       } else {
         setPath("");
-        setType("prompt");
+        setType("script");
         setContent("");
       }
       setError(null);
@@ -165,14 +165,14 @@ export function FileEditorDialog({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="prompt">Prompt</SelectItem>
-                <SelectItem value="resource">Resource</SelectItem>
+                <SelectItem value="script">Script</SelectItem>
+                <SelectItem value="reference">Reference</SelectItem>
               </SelectContent>
             </Select>
             <p className="text-xs text-muted-foreground">
-              {type === "prompt"
-                ? "Prompt files contain additional instructions or sub-prompts."
-                : "Resource files contain reference data, templates, or examples."}
+              {type === "script"
+                ? "Script files contain executable code (Python, Bash, etc.)."
+                : "Reference files contain documentation, templates, or examples."}
             </p>
           </div>
 

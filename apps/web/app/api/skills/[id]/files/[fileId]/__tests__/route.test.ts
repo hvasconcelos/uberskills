@@ -61,21 +61,21 @@ describe("PUT /api/skills/[id]/files/[fileId]", () => {
     mockedUpdateFile.mockReturnValue({
       id: "f-1",
       skillId: "sk-1",
-      path: "prompts/updated.md",
+      path: "scripts/updated.md",
       content: "Updated",
-      type: "prompt",
+      type: "script",
       createdAt: MOCK_DATE,
       updatedAt: MOCK_DATE,
     });
 
     const response = await PUT(
-      makePutRequest({ path: "prompts/updated.md", content: "Updated" }),
+      makePutRequest({ path: "scripts/updated.md", content: "Updated" }),
       makeContext("sk-1", "f-1"),
     );
     const data = await response.json();
 
     expect(response.status).toBe(200);
-    expect(data.path).toBe("prompts/updated.md");
+    expect(data.path).toBe("scripts/updated.md");
   });
 
   it("returns 400 for invalid JSON", async () => {
@@ -142,7 +142,7 @@ describe("PUT /api/skills/[id]/files/[fileId]", () => {
         skillId: "sk-1",
         path: "taken.md",
         content: "",
-        type: "resource",
+        type: "reference",
         createdAt: MOCK_DATE,
         updatedAt: MOCK_DATE,
       },
@@ -163,7 +163,7 @@ describe("PUT /api/skills/[id]/files/[fileId]", () => {
         skillId: "sk-1",
         path: "same.md",
         content: "",
-        type: "resource",
+        type: "reference",
         createdAt: MOCK_DATE,
         updatedAt: MOCK_DATE,
       },
@@ -173,7 +173,7 @@ describe("PUT /api/skills/[id]/files/[fileId]", () => {
       skillId: "sk-1",
       path: "same.md",
       content: "updated",
-      type: "resource",
+      type: "reference",
       createdAt: MOCK_DATE,
       updatedAt: MOCK_DATE,
     });

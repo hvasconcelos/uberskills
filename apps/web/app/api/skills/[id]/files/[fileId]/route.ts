@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 import { routeLogger } from "@/lib/logger";
 
-const VALID_FILE_TYPES: FileType[] = ["prompt", "resource"];
+const VALID_FILE_TYPES: FileType[] = ["script", "reference"];
 const PATH_TRAVERSAL_PATTERN = /(?:^|\/)\.\.(?:\/|$)/;
 
 const putLog = routeLogger("PUT", "/api/skills/[id]/files/[fileId]");

@@ -36,7 +36,7 @@ export const skills = sqliteTable(
 );
 
 // ---------------------------------------------------------------------------
-// skill_files — auxiliary files (prompts, resources) belonging to a skill
+// skill_files — auxiliary files (scripts, references) belonging to a skill
 // ---------------------------------------------------------------------------
 
 export const skillFiles = sqliteTable(
@@ -50,9 +50,9 @@ export const skillFiles = sqliteTable(
       .references(() => skills.id, { onDelete: "cascade" }),
     path: text("path").notNull(),
     content: text("content").notNull().default(""),
-    type: text("type", { enum: ["prompt", "resource"] })
+    type: text("type", { enum: ["script", "reference"] })
       .notNull()
-      .default("resource"),
+      .default("reference"),
     createdAt: integer("created_at", { mode: "timestamp" })
       .notNull()
       .$defaultFn(() => new Date()),

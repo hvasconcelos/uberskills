@@ -8,7 +8,7 @@ import { importFromDirectory, importFromZip } from "../importer";
 const FIXTURES = resolve(__dirname, "fixtures");
 
 describe("importFromDirectory", () => {
-  it("imports a valid skill with prompts and resources", async () => {
+  it("imports a valid skill with scripts and references", async () => {
     const results = await importFromDirectory(join(FIXTURES, "valid-skill"));
 
     expect(results).toHaveLength(1);
@@ -20,19 +20,21 @@ describe("importFromDirectory", () => {
     expect(result?.skill.frontmatter.model_pattern).toBe("claude-.*");
     expect(result?.skill.content).toContain("# Instructions");
     expect(result?.valid).toBe(true);
-    expect(result?.errors).toHaveLength(0);
+    // Warnings (non-kebab name, description without trigger language) are expected
+    const importErrors = result?.errors.filter((e) => e.severity === "error") ?? [];
+    expect(importErrors).toHaveLength(0);
 
     // Should detect auxiliary files
     expect(result?.files).toHaveLength(2);
-    const promptFile = result?.files.find((f) => f.path === "prompts/setup.md");
-    expect(promptFile).toBeDefined();
-    expect(promptFile?.type).toBe("prompt");
-    expect(promptFile?.content).toContain("# Setup Prompt");
+    const scriptFile = result?.files.find((f) => f.path === "scripts/setup.md");
+    expect(scriptFile).toBeDefined();
+    expect(scriptFile?.type).toBe("script");
+    expect(scriptFile?.content).toContain("# Setup Prompt");
 
-    const resourceFile = result?.files.find((f) => f.path === "resources/data.md");
-    expect(resourceFile).toBeDefined();
-    expect(resourceFile?.type).toBe("resource");
-    expect(resourceFile?.content).toContain("# Reference Data");
+    const referenceFile = result?.files.find((f) => f.path === "references/data.md");
+    expect(referenceFile).toBeDefined();
+    expect(referenceFile?.type).toBe("reference");
+    expect(referenceFile?.content).toContain("# Reference Data");
   });
 
   it("imports multiple skills from a parent directory", async () => {
@@ -91,7 +93,7 @@ describe("importFromDirectory", () => {
     it("ignores symlinks that could escape the source directory", async () => {
       // Create a skill directory with a SKILL.md
       const skillDir = join(tempDir, "my-skill");
-      await mkdir(join(skillDir, "resources"), { recursive: true });
+      await mkdir(join(skillDir, "references"), { recursive: true });
       await writeFile(
         join(skillDir, "SKILL.md"),
         `---
@@ -103,9 +105,9 @@ trigger: When testing symlinks
 # Symlink Test Instructions with enough content to pass the minimum validation length requirement.`,
       );
 
-      // Create a symlink in resources/ pointing outside the source
+      // Create a symlink in references/ pointing outside the source
       try {
-        await symlink("/etc/hosts", join(skillDir, "resources", "evil.md"));
+        await symlink("/etc/hosts", join(skillDir, "references", "evil.md"));
       } catch {
         // Skip test if symlinks aren't supported
         return;
@@ -154,8 +156,8 @@ These are the instructions for the zipped skill with enough content to pass mini
   it("imports skills with auxiliary files from zip", async () => {
     const buf = createTestZip({
       "my-skill/SKILL.md": validSkillMd,
-      "my-skill/prompts/init.md": "# Init Prompt\n\nInitialize things.",
-      "my-skill/resources/ref.md": "# Reference\n\nSome reference material.",
+      "my-skill/scripts/init.md": "# Init Script\n\nInitialize things.",
+      "my-skill/references/ref.md": "# Reference\n\nSome reference material.",
     });
 
     const results = await importFromZip(buf);
@@ -163,7 +165,20 @@ These are the instructions for the zipped skill with enough content to pass mini
     expect(results[0]?.files).toHaveLength(2);
 
     const types = results[0]?.files.map((f) => f.type).sort();
-    expect(types).toEqual(["prompt", "resource"]);
+    expect(types).toEqual(["reference", "script"]);
+  });
+
+  it("imports files from assets/ directory as reference type", async () => {
+    const buf = createTestZip({
+      "my-skill/SKILL.md": validSkillMd,
+      "my-skill/assets/config.json": '{"key": "value"}',
+    });
+
+    const results = await importFromZip(buf);
+    expect(results).toHaveLength(1);
+    expect(results[0]?.files).toHaveLength(1);
+    expect(results[0]?.files[0]?.type).toBe("reference");
+    expect(results[0]?.files[0]?.path).toBe("assets/config.json");
   });
 
   it("imports multiple skills from a single zip", async () => {
@@ -207,9 +222,9 @@ These are the instructions for the zipped skill with enough content to pass mini
   it("filters out files with disallowed extensions", async () => {
     const buf = createTestZip({
       "my-skill/SKILL.md": validSkillMd,
-      "my-skill/resources/data.md": "# Data\n\nSome data.",
-      "my-skill/resources/image.png": "fake binary data",
-      "my-skill/resources/binary.exe": "fake binary",
+      "my-skill/references/data.md": "# Data\n\nSome data.",
+      "my-skill/references/image.png": "fake binary data",
+      "my-skill/references/binary.exe": "fake binary",
     });
 
     const results = await importFromZip(buf);
@@ -217,6 +232,6 @@ These are the instructions for the zipped skill with enough content to pass mini
 
     // Only .md file should be imported, not .png or .exe
     expect(results[0]?.files).toHaveLength(1);
-    expect(results[0]?.files[0]?.path).toBe("resources/data.md");
+    expect(results[0]?.files[0]?.path).toBe("references/data.md");
   });
 });

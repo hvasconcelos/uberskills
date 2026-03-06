@@ -30,7 +30,7 @@ interface SelectedSkill {
     model_pattern?: string;
   };
   content: string;
-  files: { path: string; content: string; type: "prompt" | "resource" }[];
+  files: { path: string; content: string; type: "script" | "reference" }[];
   /** When true, overwrites an existing skill with the same slug. */
   overwrite?: boolean;
 }

@@ -6,7 +6,7 @@ import AdmZip from "adm-zip";
 import { parseSkillMd } from "./parser";
 import { validateSkill } from "./validator";
 
-/** Text file extensions allowed for auxiliary skill files (prompts & resources). */
+/** Text file extensions allowed for auxiliary skill files (scripts & references). */
 const ALLOWED_EXTENSIONS = new Set([
   ".md",
   ".txt",
@@ -26,7 +26,7 @@ const ALLOWED_EXTENSIONS = new Set([
 ]);
 
 /** Subdirectories scanned for auxiliary files within a skill directory. */
-const AUXILIARY_SUBDIRS = ["prompts", "resources"] as const;
+const AUXILIARY_SUBDIRS = ["scripts", "references", "assets"] as const;
 
 /** A single file discovered within a skill directory. */
 export interface ImportedFile {
@@ -69,9 +69,9 @@ function hasAllowedExtension(filename: string): boolean {
   return ALLOWED_EXTENSIONS.has(filename.slice(dot).toLowerCase());
 }
 
-/** Infer file type from its relative path: files under `prompts/` are prompts, rest are resources. */
+/** Infer file type from its relative path: files under `scripts/` are scripts, rest are references. */
 function inferFileType(relativePath: string): FileType {
-  return relativePath.startsWith("prompts/") ? "prompt" : "resource";
+  return relativePath.startsWith("scripts/") ? "script" : "reference";
 }
 
 /**
@@ -110,8 +110,8 @@ async function collectFiles(
 /**
  * Import a single skill from a directory containing a SKILL.md file.
  *
- * Parses the SKILL.md, collects auxiliary files from `prompts/` and `resources/`
- * subdirectories, and validates the resulting skill.
+ * Parses the SKILL.md, collects auxiliary files from `scripts/`, `references/`,
+ * and `assets/` subdirectories, and validates the resulting skill.
  */
 async function importSingleSkill(skillDir: string, root: string): Promise<ImportResult> {
   const raw = await readFile(join(skillDir, "SKILL.md"), "utf-8");

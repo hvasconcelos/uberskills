@@ -76,7 +76,7 @@ export interface EditorFileData {
   skillId: string;
   path: string;
   content: string;
-  type: "prompt" | "resource";
+  type: "script" | "reference";
   createdAt: string;
   updatedAt: string;
 }

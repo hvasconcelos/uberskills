@@ -104,7 +104,7 @@ export async function POST(request: Request): Promise<Response> {
   const resolvedContent = substitute(skill.content, substitutionValues);
 
   // Fetch skill files and build system prompt with progressive disclosure.
-  // Prompt files are always inlined; large resource files are summarized.
+  // Script files are always inlined; large reference files are summarized.
   const skillFiles = listFiles(skillId);
   const { systemPrompt, inlinedCount, summarizedCount } = buildTestSystemPrompt({
     resolvedContent,

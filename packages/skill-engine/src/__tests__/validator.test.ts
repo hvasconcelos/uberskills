@@ -3,8 +3,8 @@ import { describe, expect, it } from "vitest";
 import { validateSkill } from "../validator";
 
 const validFrontmatter: SkillFrontmatter = {
-  name: "My Skill",
-  description: "A useful skill that helps users.",
+  name: "my-skill",
+  description: "A useful skill that helps users. Use when the user asks for help.",
   trigger: "When the user asks for help",
 };
 
@@ -60,10 +60,76 @@ describe("validateSkill", () => {
   });
 
   it("passes when name is exactly 100 characters", () => {
-    const fm: SkillFrontmatter = { ...validFrontmatter, name: "A".repeat(100) };
+    const fm: SkillFrontmatter = { ...validFrontmatter, name: "a".repeat(100) };
     const result = validateSkill(fm, validContent);
 
     expect(result.valid).toBe(true);
+  });
+
+  it("warns when name is not kebab-case", () => {
+    const fm: SkillFrontmatter = { ...validFrontmatter, name: "My Skill" };
+    const result = validateSkill(fm, validContent);
+
+    expect(result.valid).toBe(true);
+    expect(result.errors).toContainEqual(
+      expect.objectContaining({
+        field: "name",
+        severity: "warning",
+        message: "Name should be kebab-case (e.g. 'my-skill').",
+      }),
+    );
+  });
+
+  it("does not warn when name is kebab-case", () => {
+    const fm: SkillFrontmatter = { ...validFrontmatter, name: "my-great-skill" };
+    const result = validateSkill(fm, validContent);
+
+    const nameWarnings = result.errors.filter(
+      (e) => e.field === "name" && e.severity === "warning",
+    );
+    expect(nameWarnings).toHaveLength(0);
+  });
+
+  it("fails when name contains 'claude'", () => {
+    const fm: SkillFrontmatter = { ...validFrontmatter, name: "claude-helper" };
+    const result = validateSkill(fm, validContent);
+
+    expect(result.valid).toBe(false);
+    expect(result.errors).toContainEqual(
+      expect.objectContaining({
+        field: "name",
+        severity: "error",
+        message: "Skill names must not contain 'claude' or 'anthropic' (reserved).",
+      }),
+    );
+  });
+
+  it("fails when name contains 'anthropic' (case-insensitive)", () => {
+    const fm: SkillFrontmatter = { ...validFrontmatter, name: "my-Anthropic-tool" };
+    const result = validateSkill(fm, validContent);
+
+    expect(result.valid).toBe(false);
+    expect(result.errors).toContainEqual(
+      expect.objectContaining({
+        field: "name",
+        severity: "error",
+        message: "Skill names must not contain 'claude' or 'anthropic' (reserved).",
+      }),
+    );
+  });
+
+  it("fails when name contains XML angle brackets", () => {
+    const fm: SkillFrontmatter = { ...validFrontmatter, name: "<my-skill>" };
+    const result = validateSkill(fm, validContent);
+
+    expect(result.valid).toBe(false);
+    expect(result.errors).toContainEqual(
+      expect.objectContaining({
+        field: "name",
+        severity: "error",
+        message: "Frontmatter fields must not contain XML angle brackets.",
+      }),
+    );
   });
 
   // --- description validation ---
@@ -79,8 +145,8 @@ describe("validateSkill", () => {
     );
   });
 
-  it("fails when description exceeds 500 characters", () => {
-    const fm: SkillFrontmatter = { ...validFrontmatter, description: "B".repeat(501) };
+  it("fails when description exceeds 1024 characters", () => {
+    const fm: SkillFrontmatter = { ...validFrontmatter, description: "B".repeat(1025) };
     const result = validateSkill(fm, validContent);
 
     expect(result.valid).toBe(false);
@@ -89,11 +155,61 @@ describe("validateSkill", () => {
     );
   });
 
-  it("passes when description is exactly 500 characters", () => {
-    const fm: SkillFrontmatter = { ...validFrontmatter, description: "B".repeat(500) };
+  it("passes when description is exactly 1024 characters", () => {
+    const fm: SkillFrontmatter = {
+      ...validFrontmatter,
+      description: `Use when ${"B".repeat(1015)}`,
+    };
     const result = validateSkill(fm, validContent);
 
     expect(result.valid).toBe(true);
+  });
+
+  it("fails when description contains XML angle brackets", () => {
+    const fm: SkillFrontmatter = {
+      ...validFrontmatter,
+      description: "Does <something> useful. Use when asked.",
+    };
+    const result = validateSkill(fm, validContent);
+
+    expect(result.valid).toBe(false);
+    expect(result.errors).toContainEqual(
+      expect.objectContaining({
+        field: "description",
+        severity: "error",
+        message: "Frontmatter fields must not contain XML angle brackets.",
+      }),
+    );
+  });
+
+  it("warns when description lacks trigger language", () => {
+    const fm: SkillFrontmatter = {
+      ...validFrontmatter,
+      description: "A useful skill that helps users.",
+    };
+    const result = validateSkill(fm, validContent);
+
+    expect(result.valid).toBe(true);
+    expect(result.errors).toContainEqual(
+      expect.objectContaining({
+        field: "description",
+        severity: "warning",
+        message: "Description should explain WHAT the skill does AND WHEN to use it.",
+      }),
+    );
+  });
+
+  it("does not warn when description has trigger language", () => {
+    const fm: SkillFrontmatter = {
+      ...validFrontmatter,
+      description: "Generates React components. Use when the user asks to create a component.",
+    };
+    const result = validateSkill(fm, validContent);
+
+    const descWarnings = result.errors.filter(
+      (e) => e.field === "description" && e.message.includes("WHAT"),
+    );
+    expect(descWarnings).toHaveLength(0);
   });
 
   // --- trigger validation ---
@@ -115,6 +231,20 @@ describe("validateSkill", () => {
     expect(result.valid).toBe(false);
     expect(result.errors).toContainEqual(
       expect.objectContaining({ field: "trigger", severity: "error" }),
+    );
+  });
+
+  it("fails when trigger contains XML angle brackets", () => {
+    const fm: SkillFrontmatter = { ...validFrontmatter, trigger: "When <user> asks" };
+    const result = validateSkill(fm, validContent);
+
+    expect(result.valid).toBe(false);
+    expect(result.errors).toContainEqual(
+      expect.objectContaining({
+        field: "trigger",
+        severity: "error",
+        message: "Frontmatter fields must not contain XML angle brackets.",
+      }),
     );
   });
 
@@ -182,7 +312,11 @@ describe("validateSkill", () => {
   });
 
   it("required-field errors have severity 'error'", () => {
-    const fm: SkillFrontmatter = { name: "", description: "Has a description", trigger: "" };
+    const fm: SkillFrontmatter = {
+      name: "",
+      description: "Has a description. Use when testing.",
+      trigger: "",
+    };
     const result = validateSkill(fm, "");
 
     for (const err of result.errors) {
@@ -218,6 +352,6 @@ describe("validateSkill", () => {
 
     expect(result.valid).toBe(true);
     const warnings = result.errors.filter((e) => e.severity === "warning");
-    expect(warnings.length).toBe(2);
+    expect(warnings.length).toBeGreaterThanOrEqual(2);
   });
 });

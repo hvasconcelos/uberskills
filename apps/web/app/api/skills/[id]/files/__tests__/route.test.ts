@@ -55,9 +55,9 @@ describe("GET /api/skills/[id]/files", () => {
       {
         id: "f-1",
         skillId: "sk-1",
-        path: "prompts/setup.md",
+        path: "scripts/setup.md",
         content: "Setup",
-        type: "prompt",
+        type: "script",
         createdAt: MOCK_DATE,
         updatedAt: MOCK_DATE,
       },
@@ -69,7 +69,7 @@ describe("GET /api/skills/[id]/files", () => {
 
     expect(response.status).toBe(200);
     expect(data.files).toHaveLength(1);
-    expect(data.files[0].path).toBe("prompts/setup.md");
+    expect(data.files[0].path).toBe("scripts/setup.md");
   });
 
   it("returns 404 when skill not found", async () => {
@@ -107,45 +107,45 @@ describe("POST /api/skills/[id]/files", () => {
     mockedCreateFile.mockReturnValue({
       id: "f-new",
       skillId: "sk-1",
-      path: "prompts/init.md",
+      path: "scripts/init.md",
       content: "Init content",
-      type: "prompt",
+      type: "script",
       createdAt: MOCK_DATE,
       updatedAt: MOCK_DATE,
     });
 
     const response = await POST(
-      makePostRequest({ path: "prompts/init.md", content: "Init content", type: "prompt" }),
+      makePostRequest({ path: "scripts/init.md", content: "Init content", type: "script" }),
       makeContext("sk-1"),
     );
     const data = await response.json();
 
     expect(response.status).toBe(201);
-    expect(data.path).toBe("prompts/init.md");
+    expect(data.path).toBe("scripts/init.md");
     expect(mockedCreateFile).toHaveBeenCalledWith({
       skillId: "sk-1",
-      path: "prompts/init.md",
+      path: "scripts/init.md",
       content: "Init content",
-      type: "prompt",
+      type: "script",
     });
   });
 
-  it("defaults type to resource when not provided", async () => {
+  it("defaults type to reference when not provided", async () => {
     mockedGetSkillById.mockReturnValue(fakeSkill as ReturnType<typeof getSkillById>);
     mockedListFiles.mockReturnValue([]);
     mockedCreateFile.mockReturnValue({
       id: "f-new",
       skillId: "sk-1",
-      path: "resources/data.md",
+      path: "references/data.md",
       content: "",
-      type: "resource",
+      type: "reference",
       createdAt: MOCK_DATE,
       updatedAt: MOCK_DATE,
     });
 
-    await POST(makePostRequest({ path: "resources/data.md" }), makeContext("sk-1"));
+    await POST(makePostRequest({ path: "references/data.md" }), makeContext("sk-1"));
 
-    expect(mockedCreateFile).toHaveBeenCalledWith(expect.objectContaining({ type: "resource" }));
+    expect(mockedCreateFile).toHaveBeenCalledWith(expect.objectContaining({ type: "reference" }));
   });
 
   it("returns 400 for invalid JSON", async () => {
@@ -248,15 +248,15 @@ describe("POST /api/skills/[id]/files", () => {
       {
         id: "f-1",
         skillId: "sk-1",
-        path: "prompts/setup.md",
+        path: "scripts/setup.md",
         content: "",
-        type: "prompt",
+        type: "script",
         createdAt: MOCK_DATE,
         updatedAt: MOCK_DATE,
       },
     ]);
 
-    const response = await POST(makePostRequest({ path: "prompts/setup.md" }), makeContext("sk-1"));
+    const response = await POST(makePostRequest({ path: "scripts/setup.md" }), makeContext("sk-1"));
     const data = await response.json();
 
     expect(response.status).toBe(409);

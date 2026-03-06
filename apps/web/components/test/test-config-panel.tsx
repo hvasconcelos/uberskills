@@ -28,7 +28,7 @@ export interface TestSkillData {
   name: string;
   slug: string;
   content: string;
-  /** Number of bundled files (prompts + resources) associated with this skill. */
+  /** Number of bundled files (scripts + references) associated with this skill. */
   fileCount: number;
 }
 
@@ -186,7 +186,7 @@ export function TestConfigPanel({
                     <>
                       {" "}
                       {skill.fileCount} bundled file(s) will be appended with progressive disclosure
-                      (prompts inlined, large resources summarized).
+                      (scripts inlined, large references summarized).
                     </>
                   )}
                 </DialogDescription>

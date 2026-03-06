@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 import { routeLogger } from "@/lib/logger";
 
-const VALID_FILE_TYPES: FileType[] = ["prompt", "resource"];
+const VALID_FILE_TYPES: FileType[] = ["script", "reference"];
 const PATH_TRAVERSAL_PATTERN = /(?:^|\/)\.\.(?:\/|$)/;
 
 const getLog = routeLogger("GET", "/api/skills/[id]/files");
@@ -113,7 +113,7 @@ export async function POST(request: Request, context: RouteContext): Promise<Nex
       skillId: id,
       path: trimmedPath,
       content: typeof content === "string" ? content : "",
-      type: (type as FileType) ?? "resource",
+      type: (type as FileType) ?? "reference",
     });
 
     rlog.info({ fileId: file.id, path: trimmedPath }, "file created");

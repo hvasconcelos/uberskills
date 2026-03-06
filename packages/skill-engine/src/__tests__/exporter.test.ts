@@ -31,18 +31,18 @@ function makeFiles(): SkillFile[] {
     {
       id: "file-1",
       skillId: "test-id-001",
-      path: "prompts/setup.md",
-      content: "# Setup Prompt\n\nInitialize the system.",
-      type: "prompt",
+      path: "scripts/setup.md",
+      content: "# Setup Script\n\nInitialize the system.",
+      type: "script",
       createdAt: new Date("2026-01-01"),
       updatedAt: new Date("2026-01-01"),
     },
     {
       id: "file-2",
       skillId: "test-id-001",
-      path: "resources/data.md",
+      path: "references/data.md",
       content: "# Data\n\nSome reference data.",
-      type: "resource",
+      type: "reference",
       createdAt: new Date("2026-01-01"),
       updatedAt: new Date("2026-01-01"),
     },
@@ -73,13 +73,13 @@ describe("exportToZip", () => {
     const buf = await exportToZip(makeSkill(), makeFiles());
     const zip = new AdmZip(buf);
 
-    const promptEntry = zip.getEntry("test-skill/prompts/setup.md");
-    expect(promptEntry).not.toBeNull();
-    expect(promptEntry?.getData().toString("utf-8")).toContain("# Setup Prompt");
+    const scriptEntry = zip.getEntry("test-skill/scripts/setup.md");
+    expect(scriptEntry).not.toBeNull();
+    expect(scriptEntry?.getData().toString("utf-8")).toContain("# Setup Script");
 
-    const resourceEntry = zip.getEntry("test-skill/resources/data.md");
-    expect(resourceEntry).not.toBeNull();
-    expect(resourceEntry?.getData().toString("utf-8")).toContain("# Data");
+    const referenceEntry = zip.getEntry("test-skill/references/data.md");
+    expect(referenceEntry).not.toBeNull();
+    expect(referenceEntry?.getData().toString("utf-8")).toContain("# Data");
   });
 
   it("includes model_pattern in SKILL.md when present", async () => {
@@ -157,7 +157,7 @@ describe("deployToFilesystem", () => {
         skillId: skill.id,
         path: "../../etc/passwd",
         content: "evil content",
-        type: "resource",
+        type: "reference",
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -195,13 +195,13 @@ describe("deployToFilesystem", () => {
     expect(skillMd).toContain("name: Test Skill");
     expect(skillMd).toContain("# Instructions");
 
-    // Verify prompt file
-    const prompt = await readFile(join(result, "prompts", "setup.md"), "utf-8");
-    expect(prompt).toContain("# Setup Prompt");
+    // Verify script file
+    const script = await readFile(join(result, "scripts", "setup.md"), "utf-8");
+    expect(script).toContain("# Setup Script");
 
-    // Verify resource file
-    const resource = await readFile(join(result, "resources", "data.md"), "utf-8");
-    expect(resource).toContain("# Data");
+    // Verify reference file
+    const reference = await readFile(join(result, "references", "data.md"), "utf-8");
+    expect(reference).toContain("# Data");
 
     // Clean up
     await rm(join(skillsRoot, "test-skill"), { recursive: true, force: true });

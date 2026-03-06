@@ -111,9 +111,9 @@ describe("POST /api/export/deploy", () => {
       {
         id: "f_1",
         skillId: "sk_1",
-        path: "prompts/setup.md",
+        path: "scripts/setup.md",
         content: "Setup content",
-        type: "prompt",
+        type: "script",
         createdAt: MOCK_DATE,
         updatedAt: MOCK_DATE,
       },

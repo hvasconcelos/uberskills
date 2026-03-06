@@ -7,7 +7,7 @@ const SKILL_CONTENT = "You are a helpful coding assistant.\n\nFollow best practi
 function makeFile(overrides: Partial<SystemPromptFile> & { path: string }): SystemPromptFile {
   return {
     content: "file content here",
-    type: "resource",
+    type: "reference",
     ...overrides,
   };
 }
@@ -22,23 +22,23 @@ function makeLargeContent(lineCount: number): string {
 
 describe("isFileReferenced", () => {
   it("returns true when the full path appears in content", () => {
-    const content = "Refer to resources/api-docs.md for API details.";
-    expect(isFileReferenced(content, "resources/api-docs.md")).toBe(true);
+    const content = "Refer to references/api-docs.md for API details.";
+    expect(isFileReferenced(content, "references/api-docs.md")).toBe(true);
   });
 
   it("returns true when only the filename appears in content", () => {
     const content = "Follow the rules in style-guide.md at all times.";
-    expect(isFileReferenced(content, "resources/style-guide.md")).toBe(true);
+    expect(isFileReferenced(content, "references/style-guide.md")).toBe(true);
   });
 
   it("returns false when neither path nor filename appears", () => {
     const content = "You are a helpful assistant.";
-    expect(isFileReferenced(content, "resources/api-docs.md")).toBe(false);
+    expect(isFileReferenced(content, "references/api-docs.md")).toBe(false);
   });
 
   it("returns false for partial matches that are not the filename", () => {
     const content = "Use the api module.";
-    expect(isFileReferenced(content, "resources/api-docs.md")).toBe(false);
+    expect(isFileReferenced(content, "references/api-docs.md")).toBe(false);
   });
 
   it("handles paths with no directory separator", () => {
@@ -63,24 +63,24 @@ describe("buildTestSystemPrompt", () => {
     expect(result.summarizedCount).toBe(0);
   });
 
-  it("inlines small resource files in full", () => {
+  it("inlines small reference files in full", () => {
     const result = buildTestSystemPrompt({
       resolvedContent: SKILL_CONTENT,
-      files: [makeFile({ path: "resources/style-guide.md", content: "Use tabs." })],
+      files: [makeFile({ path: "references/style-guide.md", content: "Use tabs." })],
     });
 
     expect(result.systemPrompt).toContain("## Skill Reference Files");
-    expect(result.systemPrompt).toContain("### File: resources/style-guide.md (resource)");
+    expect(result.systemPrompt).toContain("### File: references/style-guide.md (reference)");
     expect(result.systemPrompt).toContain("Use tabs.");
     expect(result.inlinedCount).toBe(1);
     expect(result.summarizedCount).toBe(0);
   });
 
-  it("always inlines prompt files regardless of size", () => {
-    const largePrompt = makeLargeContent(200);
+  it("always inlines script files regardless of size", () => {
+    const largeScript = makeLargeContent(200);
     const result = buildTestSystemPrompt({
       resolvedContent: SKILL_CONTENT,
-      files: [makeFile({ path: "prompts/setup.md", content: largePrompt, type: "prompt" })],
+      files: [makeFile({ path: "scripts/setup.md", content: largeScript, type: "script" })],
     });
 
     expect(result.systemPrompt).toContain("line 200");
@@ -88,11 +88,11 @@ describe("buildTestSystemPrompt", () => {
     expect(result.summarizedCount).toBe(0);
   });
 
-  it("summarizes large unreferenced resource files with preview", () => {
-    const largeResource = makeLargeContent(150);
+  it("summarizes large unreferenced reference files with preview", () => {
+    const largeReference = makeLargeContent(150);
     const result = buildTestSystemPrompt({
       resolvedContent: SKILL_CONTENT,
-      files: [makeFile({ path: "resources/api-docs.md", content: largeResource })],
+      files: [makeFile({ path: "references/api-docs.md", content: largeReference })],
     });
 
     expect(result.systemPrompt).toContain("Showing first 20 of 150 lines");
@@ -104,12 +104,12 @@ describe("buildTestSystemPrompt", () => {
     expect(result.summarizedCount).toBe(1);
   });
 
-  it("fully inlines large resource files when referenced by full path", () => {
-    const largeResource = makeLargeContent(200);
-    const contentWithRef = "You are an assistant.\n\nRefer to resources/api-docs.md for guidance.";
+  it("fully inlines large reference files when referenced by full path", () => {
+    const largeReference = makeLargeContent(200);
+    const contentWithRef = "You are an assistant.\n\nRefer to references/api-docs.md for guidance.";
     const result = buildTestSystemPrompt({
       resolvedContent: contentWithRef,
-      files: [makeFile({ path: "resources/api-docs.md", content: largeResource })],
+      files: [makeFile({ path: "references/api-docs.md", content: largeReference })],
     });
 
     expect(result.systemPrompt).toContain("line 200");
@@ -118,12 +118,12 @@ describe("buildTestSystemPrompt", () => {
     expect(result.summarizedCount).toBe(0);
   });
 
-  it("fully inlines large resource files when referenced by filename only", () => {
-    const largeResource = makeLargeContent(200);
+  it("fully inlines large reference files when referenced by filename only", () => {
+    const largeReference = makeLargeContent(200);
     const contentWithRef = "Follow the rules in style-guide.md at all times.";
     const result = buildTestSystemPrompt({
       resolvedContent: contentWithRef,
-      files: [makeFile({ path: "resources/style-guide.md", content: largeResource })],
+      files: [makeFile({ path: "references/style-guide.md", content: largeReference })],
     });
 
     expect(result.systemPrompt).toContain("line 200");
@@ -131,13 +131,13 @@ describe("buildTestSystemPrompt", () => {
     expect(result.summarizedCount).toBe(0);
   });
 
-  it("handles mixed referenced and unreferenced large resource files", () => {
+  it("handles mixed referenced and unreferenced large reference files", () => {
     const contentWithRef = "Use api-docs.md as a reference.";
     const result = buildTestSystemPrompt({
       resolvedContent: contentWithRef,
       files: [
-        makeFile({ path: "resources/api-docs.md", content: makeLargeContent(200) }),
-        makeFile({ path: "resources/changelog.md", content: makeLargeContent(200) }),
+        makeFile({ path: "references/api-docs.md", content: makeLargeContent(200) }),
+        makeFile({ path: "references/changelog.md", content: makeLargeContent(200) }),
       ],
     });
 
@@ -152,7 +152,7 @@ describe("buildTestSystemPrompt", () => {
     const content = makeLargeContent(50);
     const result = buildTestSystemPrompt({
       resolvedContent: SKILL_CONTENT,
-      files: [makeFile({ path: "resources/data.txt", content })],
+      files: [makeFile({ path: "references/data.txt", content })],
       resourceInlineThreshold: 30,
     });
 
@@ -164,7 +164,7 @@ describe("buildTestSystemPrompt", () => {
     const content = makeLargeContent(150);
     const result = buildTestSystemPrompt({
       resolvedContent: SKILL_CONTENT,
-      files: [makeFile({ path: "resources/data.txt", content })],
+      files: [makeFile({ path: "references/data.txt", content })],
       previewLines: 5,
     });
 
@@ -173,40 +173,40 @@ describe("buildTestSystemPrompt", () => {
     expect(result.systemPrompt).not.toContain("line 6");
   });
 
-  it("orders prompt files before resource files", () => {
+  it("orders script files before reference files", () => {
     const result = buildTestSystemPrompt({
       resolvedContent: SKILL_CONTENT,
       files: [
-        makeFile({ path: "resources/ref.md", content: "resource content" }),
-        makeFile({ path: "prompts/init.md", content: "prompt content", type: "prompt" }),
+        makeFile({ path: "references/ref.md", content: "reference content" }),
+        makeFile({ path: "scripts/init.md", content: "script content", type: "script" }),
       ],
     });
 
-    const promptIdx = result.systemPrompt.indexOf("prompts/init.md");
-    const resourceIdx = result.systemPrompt.indexOf("resources/ref.md");
-    expect(promptIdx).toBeLessThan(resourceIdx);
+    const scriptIdx = result.systemPrompt.indexOf("scripts/init.md");
+    const referenceIdx = result.systemPrompt.indexOf("references/ref.md");
+    expect(scriptIdx).toBeLessThan(referenceIdx);
   });
 
   it("handles mixed inline and summarized files", () => {
     const result = buildTestSystemPrompt({
       resolvedContent: SKILL_CONTENT,
       files: [
-        makeFile({ path: "prompts/core.md", content: makeLargeContent(200), type: "prompt" }),
-        makeFile({ path: "resources/small.txt", content: "tiny" }),
-        makeFile({ path: "resources/big.txt", content: makeLargeContent(150) }),
+        makeFile({ path: "scripts/core.md", content: makeLargeContent(200), type: "script" }),
+        makeFile({ path: "references/small.txt", content: "tiny" }),
+        makeFile({ path: "references/big.txt", content: makeLargeContent(150) }),
       ],
     });
 
-    expect(result.inlinedCount).toBe(2); // prompt (always inline) + small resource
-    expect(result.summarizedCount).toBe(1); // big unreferenced resource
+    expect(result.inlinedCount).toBe(2); // script (always inline) + small reference
+    expect(result.summarizedCount).toBe(1); // big unreferenced reference
     expect(result.systemPrompt).toContain("3 file(s) are bundled");
   });
 
-  it("resource file at exactly threshold lines is inlined", () => {
+  it("reference file at exactly threshold lines is inlined", () => {
     const content = makeLargeContent(100);
     const result = buildTestSystemPrompt({
       resolvedContent: SKILL_CONTENT,
-      files: [makeFile({ path: "resources/exact.txt", content })],
+      files: [makeFile({ path: "references/exact.txt", content })],
       resourceInlineThreshold: 100,
     });
 
@@ -214,11 +214,11 @@ describe("buildTestSystemPrompt", () => {
     expect(result.summarizedCount).toBe(0);
   });
 
-  it("resource file at threshold + 1 lines is summarized when unreferenced", () => {
+  it("reference file at threshold + 1 lines is summarized when unreferenced", () => {
     const content = makeLargeContent(101);
     const result = buildTestSystemPrompt({
       resolvedContent: SKILL_CONTENT,
-      files: [makeFile({ path: "resources/over.txt", content })],
+      files: [makeFile({ path: "references/over.txt", content })],
       resourceInlineThreshold: 100,
     });
 
@@ -229,7 +229,7 @@ describe("buildTestSystemPrompt", () => {
   it("preserves resolvedContent at the start of systemPrompt", () => {
     const result = buildTestSystemPrompt({
       resolvedContent: SKILL_CONTENT,
-      files: [makeFile({ path: "resources/a.txt", content: "data" })],
+      files: [makeFile({ path: "references/a.txt", content: "data" })],
     });
 
     expect(result.systemPrompt.startsWith(SKILL_CONTENT)).toBe(true);

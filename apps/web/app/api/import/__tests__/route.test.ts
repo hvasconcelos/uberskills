@@ -249,7 +249,7 @@ describe("POST /api/import — confirm", () => {
           {
             frontmatter: { name: "Imported Skill", description: "", trigger: "" },
             content: "# Content",
-            files: [{ path: "prompts/init.md", content: "Init", type: "prompt" }],
+            files: [{ path: "scripts/init.md", content: "Init", type: "script" }],
           },
         ],
       }),

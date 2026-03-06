@@ -18,7 +18,7 @@ describe("@uberskills/types", () => {
   });
 
   it("file type values are assignable", () => {
-    const types: Array<import("../index").FileType> = ["prompt", "resource"];
+    const types: Array<import("../index").FileType> = ["script", "reference"];
     expect(types).toHaveLength(2);
   });
 

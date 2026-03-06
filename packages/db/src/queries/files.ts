@@ -52,7 +52,7 @@ export function createFile(input: CreateFileInput): typeof skillFiles.$inferSele
       skillId: input.skillId,
       path: input.path,
       content: input.content ?? "",
-      type: input.type ?? "resource",
+      type: input.type ?? "reference",
       createdAt: now,
       updatedAt: now,
     })

@@ -70,31 +70,31 @@ describe("files query functions", () => {
 
       const file = createFile({
         skillId: "skill-1",
-        path: "prompts/setup.md",
+        path: "scripts/setup.md",
         content: "# Setup\nInitialize things.",
-        type: "prompt",
+        type: "script",
       });
 
       expect(file.id).toBeDefined();
       expect(file.id.length).toBe(21);
       expect(file.skillId).toBe("skill-1");
-      expect(file.path).toBe("prompts/setup.md");
+      expect(file.path).toBe("scripts/setup.md");
       expect(file.content).toBe("# Setup\nInitialize things.");
-      expect(file.type).toBe("prompt");
+      expect(file.type).toBe("script");
       expect(file.createdAt).toBeInstanceOf(Date);
       expect(file.updatedAt).toBeInstanceOf(Date);
     });
 
-    it("defaults content to empty string and type to resource", () => {
+    it("defaults content to empty string and type to reference", () => {
       insertTestSkill("skill-2", "Minimal File");
 
       const file = createFile({
         skillId: "skill-2",
-        path: "resources/data.json",
+        path: "references/data.json",
       });
 
       expect(file.content).toBe("");
-      expect(file.type).toBe("resource");
+      expect(file.type).toBe("reference");
     });
   });
 
@@ -104,15 +104,15 @@ describe("files query functions", () => {
   describe("listFiles", () => {
     it("returns files sorted by path ascending", () => {
       insertTestSkill("skill-list", "List Skill");
-      createFile({ skillId: "skill-list", path: "resources/z-file.txt" });
-      createFile({ skillId: "skill-list", path: "prompts/a-prompt.md" });
-      createFile({ skillId: "skill-list", path: "prompts/m-prompt.md" });
+      createFile({ skillId: "skill-list", path: "references/z-file.txt" });
+      createFile({ skillId: "skill-list", path: "scripts/a-script.md" });
+      createFile({ skillId: "skill-list", path: "scripts/m-script.md" });
 
       const files = listFiles("skill-list");
       expect(files.length).toBe(3);
-      expect(files[0]?.path).toBe("prompts/a-prompt.md");
-      expect(files[1]?.path).toBe("prompts/m-prompt.md");
-      expect(files[2]?.path).toBe("resources/z-file.txt");
+      expect(files[0]?.path).toBe("references/z-file.txt");
+      expect(files[1]?.path).toBe("scripts/a-script.md");
+      expect(files[2]?.path).toBe("scripts/m-script.md");
     });
 
     it("returns only files for the specified skill", () => {
@@ -142,14 +142,14 @@ describe("files query functions", () => {
         skillId: "skill-up",
         path: "old-path.md",
         content: "old content",
-        type: "resource",
+        type: "reference",
       });
 
       const updated = updateFile(created.id, { content: "new content" });
       expect(updated).not.toBeNull();
       expect(updated?.path).toBe("old-path.md");
       expect(updated?.content).toBe("new content");
-      expect(updated?.type).toBe("resource");
+      expect(updated?.type).toBe("reference");
     });
 
     it("updates path (rename)", () => {
@@ -162,10 +162,10 @@ describe("files query functions", () => {
 
     it("updates type", () => {
       insertTestSkill("skill-type", "Type Skill");
-      const created = createFile({ skillId: "skill-type", path: "file.md", type: "resource" });
+      const created = createFile({ skillId: "skill-type", path: "file.md", type: "reference" });
 
-      const updated = updateFile(created.id, { type: "prompt" });
-      expect(updated?.type).toBe("prompt");
+      const updated = updateFile(created.id, { type: "script" });
+      expect(updated?.type).toBe("script");
     });
 
     it("bumps updatedAt on update", () => {

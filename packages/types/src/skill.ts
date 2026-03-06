@@ -2,7 +2,7 @@
 export type SkillStatus = "draft" | "ready" | "deployed";
 
 /** Classification of a file within a skill. */
-export type FileType = "prompt" | "resource";
+export type FileType = "script" | "reference";
 
 /** YAML frontmatter parsed from a SKILL.md file. */
 export interface SkillFrontmatter {
@@ -28,11 +28,11 @@ export interface Skill {
   updatedAt: Date;
 }
 
-/** An auxiliary file associated with a skill (e.g. prompt template, resource). */
+/** An auxiliary file associated with a skill (e.g. script, reference). */
 export interface SkillFile {
   id: string;
   skillId: string;
-  /** Relative path within the skill directory, e.g. "prompts/setup.md". */
+  /** Relative path within the skill directory, e.g. "scripts/setup.md". */
   path: string;
   content: string;
   type: FileType;

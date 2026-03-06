@@ -19,7 +19,7 @@ import { ImportPreview } from "./import-preview";
 /** A single skill scan result enriched with slug and conflict info from the API. */
 export interface ScanResult {
   skill: { frontmatter: SkillFrontmatter; content: string };
-  files: { path: string; content: string; type: "prompt" | "resource" }[];
+  files: { path: string; content: string; type: "script" | "reference" }[];
   valid: boolean;
   errors: ValidationError[];
   source: string;
