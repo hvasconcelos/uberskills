@@ -38,17 +38,42 @@ uberSKILLS is an open-source web application that provides an integrated authori
 
 ## Quickstart
 
+Run uberSKILLS with a single command — no cloning, no setup:
+
+```bash
+npx uberskills
+```
+
+That's it. On first run it will automatically set up everything (~2 minutes), then start the server at [http://localhost:3000](http://localhost:3000).
+
+Your data is stored at `~/.uberskills/data/` and persists across runs.
+
+### Options
+
+```
+--port <number>    Port to run on (default: 3000)
+--host <string>    Host to bind to (default: localhost)
+--data-dir <path>  Custom data directory (default: ~/.uberskills/data/)
+--reset            Delete cached install and re-setup
+-d, --debug        Enable debug log level
+```
+
 ### Prerequisites
 
 - **Node.js** >= 20
-- **pnpm** — enable via `corepack enable` (ships with Node.js)
+- **git** — available in PATH
+
+### Development Setup
+
+If you want to contribute or run from source:
 
 ```bash
 # Clone the repository
 git clone https://github.com/hvasconcelos/uberskills.git
 cd uberskills
 
-# Install dependencies
+# Install dependencies (pnpm is enabled via corepack)
+corepack enable
 pnpm install
 
 # Start the development server

@@ -1,18 +1,26 @@
 #!/usr/bin/env node
 
+// uberSKILLS entry point script (bin/uberskills.mjs)
+// This script manages installation, upgrading, and launching of the uberSKILLS local server application.
+
 import { execSync, spawn } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 import { randomBytes } from "node:crypto";
 
-const VERSION = "0.9.0";
-const REPO_URL = "https://github.com/hvasconcelos/uberskills.git";
-const UBERSKILLS_HOME = join(homedir(), ".uberskills");
-const APP_DIR = join(UBERSKILLS_HOME, "app");
-const VERSION_FILE = join(UBERSKILLS_HOME, ".version");
-const PNPM_VERSION = "9.15.4";
+// ---
+// Constants
 
+const VERSION = "0.9.0"; // Current version of this launcher
+const REPO_URL = "https://github.com/hvasconcelos/uberskills.git"; // Upstream repository for app code
+const UBERSKILLS_HOME = join(homedir(), ".uberskills"); // Where all binaries, data, etc live
+const APP_DIR = join(UBERSKILLS_HOME, "app"); // Cloned app location
+const VERSION_FILE = join(UBERSKILLS_HOME, ".version"); // File to store installed version
+const PNPM_VERSION = "9.15.4"; // Explicit pnpm version for reproducible installs
+
+// ---
+// Parse CLI arguments from process.argv, supporting --host, --port, --data-dir, etc.
 function parseArgs(argv) {
   const args = {
     port: 3000,
@@ -21,8 +29,10 @@ function parseArgs(argv) {
     help: false,
     version: false,
     reset: false,
+    debug: false,
   };
 
+  // Start at argv[2] to skip 'node' and script path
   for (let i = 2; i < argv.length; i++) {
     switch (argv[i]) {
       case "--port":
@@ -57,6 +67,10 @@ function parseArgs(argv) {
       case "--reset":
         args.reset = true;
         break;
+      case "-d":
+      case "--debug":
+        args.debug = true;
+        break;
       default:
         console.error(`Unknown option: ${argv[i]}`);
         printUsage();
@@ -67,6 +81,7 @@ function parseArgs(argv) {
   return args;
 }
 
+// Print usage info for CLI users.
 function printUsage() {
   console.log(`
 uberSKILLS v${VERSION}
@@ -78,11 +93,13 @@ Options:
   --host <string>    Host to bind to (default: localhost)
   --data-dir <path>  Custom data directory (default: ~/.uberskills/data/)
   --reset            Delete cached install and re-setup
+  -d, --debug        Enable debug log level
   --version, -v      Show version
   --help, -h         Show this help message
 `);
 }
 
+// Ensure that Node.js and git are available, error otherwise.
 function checkPrerequisites() {
   const nodeVersion = process.versions.node;
   const major = parseInt(nodeVersion.split(".")[0], 10);
@@ -100,85 +117,109 @@ function checkPrerequisites() {
   }
 }
 
+// Spawn a shell command synchronously with inherited stdio and logging. Throws on error.
 function run(cmd, opts = {}) {
   console.log(`  $ ${cmd}`);
   execSync(cmd, { stdio: "inherit", ...opts });
 }
 
+// If the app is not installed (or is outdated, or --reset), clone and build it.
+// Installs and configures pnpm via corepack as well.
 function ensureInstalled(reset) {
+  // Ensure the main directory exists for caching installs and other files
   mkdirSync(UBERSKILLS_HOME, { recursive: true });
 
+  // If --reset or forced reinstall, remove any cached install and version record
   if (reset && existsSync(UBERSKILLS_HOME)) {
     console.log("Resetting uberSKILLS installation...");
     rmSync(APP_DIR, { recursive: true, force: true });
     rmSync(VERSION_FILE, { force: true });
   }
 
+  // If version is as expected, do nothing
   if (existsSync(VERSION_FILE)) {
     const cachedVersion = readFileSync(VERSION_FILE, "utf-8").trim();
     if (cachedVersion === VERSION) {
       return;
     }
+    // Otherwise, remove the old app in preparation for download
     console.log(`Upgrading uberSKILLS from v${cachedVersion} to v${VERSION}...`);
     rmSync(APP_DIR, { recursive: true, force: true });
   }
 
   console.log(`\nSetting up uberSKILLS v${VERSION} (first run, this may take a few minutes)...\n`);
 
+  // Clone the correct version of the app
   run(`git clone --depth 1 --branch v${VERSION} ${REPO_URL} ${APP_DIR}`);
 
+  // pnpm is managed with corepack so we precisely fix the version regardless of the system
   console.log("\nEnabling pnpm via corepack...");
   run("corepack enable", { cwd: APP_DIR });
   run(`corepack prepare pnpm@${PNPM_VERSION} --activate`, { cwd: APP_DIR });
 
+  // Install dependencies (as locked in pnpm-lock.yaml)
   console.log("\nInstalling dependencies...");
   run("pnpm install --frozen-lockfile", { cwd: APP_DIR });
 
+  // Run application build step
   console.log("\nBuilding application...");
   run("pnpm build", { cwd: APP_DIR });
 
+  // Write version file for caching
   writeFileSync(VERSION_FILE, VERSION, "utf-8");
   console.log("\nSetup complete!\n");
 }
 
+// Resolve (and create, if necessary) the data directory for local database/data.
 function resolveDataDir(customPath) {
+  // Use CLI-specified directory or fall back to default
   const dataDir = customPath || join(UBERSKILLS_HOME, "data");
   mkdirSync(dataDir, { recursive: true });
   return dataDir;
 }
 
+// Resolve (and create, if necessary) a local encryption secret used for database encryption, etc.
 function resolveEncryptionSecret(dataDir) {
   const secretPath = join(dataDir, ".secret");
   if (existsSync(secretPath)) {
     return readFileSync(secretPath, "utf-8").trim();
   }
+  // Generate a new 32-byte hex secret and write it
   const secret = randomBytes(32).toString("hex");
   writeFileSync(secretPath, secret, { mode: 0o600 });
   return secret;
 }
 
+// Print the fancy "running at" banner to stdout for the user, including URL and data file location.
 function printBanner(port, host, dataDir) {
   const url = `http://${host}:${port}`;
   const dbPath = join(dataDir, "uberskills.db");
 
   console.log(`
-┌─────────────────────────────────────────────────┐
-│                                                 │
-│   uberSKILLS is running!                        │
-│                                                 │
-│   Local:  ${url.padEnd(38)}│
-│   Data:   ${dbPath.length > 38 ? "..." + dbPath.slice(-35) : dbPath.padEnd(38)}│
-│                                                 │
-│   Press Ctrl+C to stop                          │
-│                                                 │
-└─────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────----------------┐
+│                                                                 │
+|   ▄▄ ▄▄ ▄▄▄▄  ▄▄▄▄▄ ▄▄▄▄  ▄█████ ██ ▄█▀ ██ ██     ██     ▄█████ |
+|   ██ ██ ██▄██ ██▄▄  ██▄█▄ ▀▀▀▄▄▄ ████   ██ ██     ██     ▀▀▀▄▄▄ |
+|   ▀███▀ ██▄█▀ ██▄▄▄ ██ ██ █████▀ ██ ▀█▄ ██ ██████ ██████ █████▀ |
+|                                                                 │
+|     made with \u2764\uFE0F  by Helder Vasconcelos               |
+│                                                                 │
+│   Local:  ${url.padEnd(53)}                                     |
+│   Data:   ${dbPath.length > 53 ? "..." + dbPath.slice(-50) : dbPath.padEnd(53)}│
+│                                                                 │
+│   Press Ctrl+C to stop                                          │
+│                                                                 │
+└──────────────────────────────────────────----------------───────┘
 `);
 }
 
-function startServer(port, host, dataDir, encryptionSecret) {
+// Launches the actual server as a child process after setup.
+// Binds stdio, propagates SIGINT/SIGTERM, sets environment (including database location and encryption).
+function startServer(port, host, dataDir, encryptionSecret, debug) {
   const standaloneDir = join(APP_DIR, "apps", "web", ".next", "standalone");
   const serverScript = join("apps", "web", "server.js");
 
+  // Launch server using Node.js (executes Next.js app built for standlone production use)
   const child = spawn("node", [serverScript], {
     cwd: standaloneDir,
     env: {
@@ -188,19 +229,23 @@ function startServer(port, host, dataDir, encryptionSecret) {
       ENCRYPTION_SECRET: encryptionSecret,
       PORT: String(port),
       HOSTNAME: host,
+      ...(debug ? { LOG_LEVEL: "debug" } : {}),
     },
     stdio: "inherit",
   });
 
+  // If there was a problem spawning the server process, exit loudly.
   child.on("error", (err) => {
     console.error(`Failed to start server: ${err.message}`);
     process.exit(1);
   });
 
+  // When the child process closes, shut down the launcher too.
   child.on("exit", (code) => {
     process.exit(code ?? 0);
   });
 
+  // Gracefully handle Ctrl+C (SIGINT) and termination (SIGTERM)
   const shutdown = () => {
     child.kill("SIGTERM");
   };
@@ -209,7 +254,9 @@ function startServer(port, host, dataDir, encryptionSecret) {
   process.on("SIGTERM", shutdown);
 }
 
-// Main
+// ---
+// MAIN EXECUTION BLOCK -- runs when this script is invoked from the CLI
+
 const args = parseArgs(process.argv);
 
 if (args.help) {
@@ -222,11 +269,11 @@ if (args.version) {
   process.exit(0);
 }
 
-checkPrerequisites();
-ensureInstalled(args.reset);
+checkPrerequisites(); // Ensure Node.js and git
+ensureInstalled(args.reset); // Download/build app if needed
 
-const dataDir = resolveDataDir(args.dataDir);
-const encryptionSecret = resolveEncryptionSecret(dataDir);
+const dataDir = resolveDataDir(args.dataDir); // Find or create data dir
+const encryptionSecret = resolveEncryptionSecret(dataDir); // Find/create encryption secret
 
-printBanner(args.port, args.host, dataDir);
-startServer(args.port, args.host, dataDir, encryptionSecret);
+printBanner(args.port, args.host, dataDir); // User info banner
+startServer(args.port, args.host, dataDir, encryptionSecret, args.debug); // Launch the server
