@@ -1,7 +1,7 @@
 # UberSkills
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-black.svg)](LICENSE)
-[![Build](https://img.shields.io/github/actions/workflow/status/uberskills/uberskills/ci.yml?branch=master)](https://github.com/uberskills/uberskills/actions)
+[![Build](https://img.shields.io/github/actions/workflow/status/hvasconcelos/uberskills/ci.yml?branch=master)](https://github.com/hvasconcelos/uberskills/actions)
 
 **Design, test, and deploy Claude Code Agent Skills through a visual, AI-assisted workflow.**
 
@@ -70,7 +70,7 @@ uberskills/
 │   ├── db/                  # Database schema, client, queries (Drizzle + SQLite)
 │   ├── skill-engine/        # SKILL.md parser, validator, generator, importer, exporter
 │   └── ui/                  # Shared UI components (shadcn/ui)
-├── specs/                   # Project specifications and documentation
+├── docs/                    # Project documentation
 ├── turbo.json               # Turborepo pipeline configuration
 ├── biome.json               # Linter and formatter configuration
 └── tsconfig.json            # Base TypeScript configuration
@@ -103,15 +103,17 @@ Set these in `apps/web/.env.local` (not committed to version control).
 
 ## Detailed Documentation
 
-Full project specifications are available in the [`specs/`](specs/) directory:
+Full project documentation is available in the [`docs/`](docs/) directory:
 
-- [01 -- Project Overview](specs/01-overview/README.md) -- vision, design principles, color system
-- [02 -- Architecture](specs/02-architecture/README.md) -- monorepo structure, API routes, data flow
-- [03 -- Data Models](specs/03-data-models/README.md) -- SQLite schema, Drizzle definitions
-- [04 -- Functional Requirements](specs/04-functional-requirements/README.md) -- feature specifications (FR1-FR7)
-- [05 -- Non-Functional Requirements](specs/05-non-functional-requirements/README.md) -- performance, accessibility
-- [06 -- Integrations](specs/06-integrations/README.md) -- OpenRouter, AI models
-- [07 -- Deployment](specs/07-deployment/README.md) -- Docker, environment setup
+- [Getting Started](docs/getting-started.md) -- Installation, setup, and first steps
+- [Features Guide](docs/features.md) -- How to use the skills library, editor, testing, import/export
+- [Architecture](docs/architecture.md) -- Monorepo structure, package responsibilities, data flow
+- [API Reference](docs/api-reference.md) -- REST API endpoints and response formats
+- [Database](docs/database.md) -- Schema, Drizzle ORM patterns, queries
+- [AI Integration](docs/ai-integration.md) -- OpenRouter, Vercel AI SDK, streaming
+- [Skill Engine](docs/skill-engine.md) -- Parser, validator, generator, importer, exporter
+- [Security](docs/security.md) -- Encryption, input validation, filesystem safety
+- [Deployment](docs/deployment.md) -- Docker, Vercel, self-hosting options
 
 ## Docker
 
