@@ -3,6 +3,7 @@ WORKDIR /app
 
 # --- deps: install production dependencies using lockfile ---
 FROM base AS deps
+RUN apt-get update && apt-get install -y python3 make g++ --no-install-recommends && rm -rf /var/lib/apt/lists/*
 COPY package.json bun.lock turbo.json ./
 COPY apps/web/package.json ./apps/web/
 COPY packages/ui/package.json ./packages/ui/
