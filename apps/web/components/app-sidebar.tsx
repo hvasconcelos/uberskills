@@ -35,6 +35,7 @@ import { useEffect, useState } from "react";
 const navItems = [
   { href: "/skills", label: "Skills", icon: LibraryIcon },
   { href: "/import", label: "Import", icon: UploadIcon },
+  { href: "/documentation", label: "Documentation", icon: BookOpenIcon },
   { href: "/settings", label: "Settings", icon: SettingsIcon },
 ] as const;
 
