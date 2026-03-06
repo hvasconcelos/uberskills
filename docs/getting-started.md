@@ -10,7 +10,7 @@ uberSKILLS is a local-first web application for creating, testing, and deploying
 ## Installation
 
 ```bash
-git clone https://github.com/<org>/uberskills.git
+git clone https://github.com/hvasconcelos/uberskills.git
 cd uberskills
 bun install
 ```

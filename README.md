@@ -40,7 +40,7 @@ uberSKILLS is an open-source web application that provides an integrated authori
 
 ```bash
 # Clone the repository
-git clone https://github.com/uberskills/uberskills.git
+git clone https://github.com/hvasconcelos/uberskills.git
 cd uberskills
 
 # Install dependencies

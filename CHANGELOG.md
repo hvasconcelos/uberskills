@@ -98,4 +98,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Consistent padding on instructions tab content
 - Tab content max-width adjusted for balanced padding
 
-[0.9.0]: https://github.com/uberskills/uberskills/releases/tag/v0.9.0
+[0.9.0]: https://github.com/hvasconcelos/uberskills/releases/tag/v0.9.0
