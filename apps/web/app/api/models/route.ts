@@ -39,10 +39,7 @@ export async function GET(): Promise<NextResponse> {
   } catch (err) {
     if (isSyncError(err)) {
       log.warn({ code: err.code }, err.message);
-      return NextResponse.json(
-        { error: err.message, code: err.code },
-        { status: err.httpStatus },
-      );
+      return NextResponse.json({ error: err.message, code: err.code }, { status: err.httpStatus });
     }
     log.error({ err }, "failed to load models");
     return NextResponse.json(
