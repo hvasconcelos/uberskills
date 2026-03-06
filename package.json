@@ -25,7 +25,8 @@
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
     "db:migrate": "turbo run db:migrate",
-    "db:reset": "turbo run db:reset"
+    "db:reset": "turbo run db:reset",
+    "start": "turbo run start"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.5",
