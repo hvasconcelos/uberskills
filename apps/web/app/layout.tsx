@@ -10,6 +10,13 @@ export const metadata: Metadata = {
   title: "uberSKILLS",
   description: "Design, test, and deploy Claude Code Agent Skills",
   manifest: "/manifest.json",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/uberSKILLS_icon.svg", type: "image/svg+xml" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export const viewport: Viewport = {

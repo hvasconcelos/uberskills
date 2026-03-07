@@ -76,7 +76,7 @@ export function AppSidebar() {
       <SidebarHeader>
         <Link href="/" className="flex items-center gap-2 px-2 py-3">
           <Image
-            src="/icon_original.png"
+            src="/uberSKILLS_icon.svg"
             alt="uberSKILLS"
             width={28}
             height={28}
