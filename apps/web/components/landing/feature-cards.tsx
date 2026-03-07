@@ -10,24 +10,18 @@ const features = [
     title: "Visual Editor with AI",
     description:
       "Design skills visually or let AI generate them from natural language. Edit metadata, instructions, and file patterns.",
-    color: "text-purple-500",
-    bg: "bg-purple-500/10",
   },
   {
     icon: FlaskConical,
     title: "Multi-Model Sandbox",
     description:
       "Test skills against multiple models with streaming responses. Compare outputs and track test history.",
-    color: "text-blue-500",
-    bg: "bg-blue-500/10",
   },
   {
     icon: Rocket,
     title: "One-Click Deploy",
     description:
       "Deploy directly to ~/.claude/skills/ with one click, or export as a zip to share with your team.",
-    color: "text-green-500",
-    bg: "bg-green-500/10",
   },
 ] as const;
 
@@ -51,8 +45,8 @@ export function FeatureCards() {
               style={{ animationDelay: `${(i + 1) * 120}ms` }}
             >
               <CardContent className="pt-6">
-                <div className={`mb-4 inline-flex rounded-lg p-2.5 ${feature.bg}`}>
-                  <feature.icon className={`size-5 ${feature.color}`} aria-hidden="true" />
+                <div className="mb-4 inline-flex rounded-lg bg-muted p-2.5">
+                  <feature.icon className="size-5 text-foreground" aria-hidden="true" />
                 </div>
                 <h3 className="mb-2 text-lg font-semibold">{feature.title}</h3>
                 <p className="text-sm leading-relaxed text-muted-foreground">
