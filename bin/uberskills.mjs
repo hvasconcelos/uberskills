@@ -72,7 +72,7 @@ function parseArgs(argv) {
     switch (argv[i]) {
       case "--port":
         args.port = parseInt(argv[++i], 10);
-        if (isNaN(args.port)) {
+        if (Number.isNaN(args.port)) {
           console.error("Error: --port requires a valid number");
           process.exit(1);
         }
@@ -150,12 +150,6 @@ function checkPrerequisites() {
     console.error("Install git: https://git-scm.com/downloads");
     process.exit(1);
   }
-}
-
-// Spawn a shell command synchronously with inherited stdio and logging. Throws on error.
-function run(cmd, opts = {}) {
-  console.log(`  $ ${cmd}`);
-  execSync(cmd, { stdio: "inherit", ...opts });
 }
 
 // If the app is not installed (or is outdated, or --reset), clone and build it.
@@ -252,7 +246,7 @@ function printBanner(port, host, dataDir) {
 |     made with \u2764\uFE0F  by Helder Vasconcelos               |
 │                                                                 │
 │   Local:  ${url.padEnd(53)}                                     |
-│   Data:   ${dbPath.length > 53 ? "..." + dbPath.slice(-50) : dbPath.padEnd(53)}│
+│   Data:   ${dbPath.length > 53 ? `...${dbPath.slice(-50)}` : dbPath.padEnd(53)}│
 │                                                                 │
 │   Press Ctrl+C to stop                                          │
 │                                                                 │
