@@ -276,6 +276,91 @@ textarea,
    Uses higher specificity via :where(:root) to
    override animations without !important.
    ────────────────────────────────────────────── */
+/* ──────────────────────────────────────────────
+   Scroll Animations
+   ────────────────────────────────────────────── */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Staggered animation delays for sequential reveals */
+.stagger-1 {
+  animation-delay: 0ms;
+}
+.stagger-2 {
+  animation-delay: 100ms;
+}
+.stagger-3 {
+  animation-delay: 200ms;
+}
+.stagger-4 {
+  animation-delay: 300ms;
+}
+.stagger-5 {
+  animation-delay: 400ms;
+}
+
+/* ──────────────────────────────────────────────
+   Landing Page — Dot Grid Background
+   Pixel-art aesthetic matching the brand logo.
+   ────────────────────────────────────────────── */
+.dot-grid {
+  background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* ──────────────────────────────────────────────
+   Landing Page — Terminal Cursor Blink
+   ────────────────────────────────────────────── */
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.animate-blink {
+  animation: blink 1.1s step-end infinite;
+}
+
+/* ──────────────────────────────────────────────
+   Landing Page — Card Hover Lift
+   ────────────────────────────────────────────── */
+.card-hover {
+  transition-property: transform, box-shadow;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-duration: 300ms;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ──────────────────────────────────────────────
+   Touch Optimization
+   ────────────────────────────────────────────── */
+a,
+button,
+[role="button"] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
 @media (prefers-reduced-motion: reduce) {
   :where(:root) *,
   :where(:root) *::before,

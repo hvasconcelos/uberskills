@@ -23,6 +23,7 @@ import {
   ChevronsRightIcon,
   ExternalLinkIcon,
   GithubIcon,
+  LayoutDashboardIcon,
   LibraryIcon,
   SettingsIcon,
   UploadIcon,
@@ -33,6 +34,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const navItems = [
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboardIcon },
   { href: "/skills", label: "Skills", icon: LibraryIcon },
   { href: "/import", label: "Import", icon: UploadIcon },
   { href: "/documentation", label: "Documentation", icon: BookOpenIcon },

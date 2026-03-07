@@ -3,7 +3,6 @@ import { GeistSans } from "geist/font/sans";
 import type { Metadata, Viewport } from "next";
 import "@/styles/globals.css";
 import { Toaster } from "@uberskills/ui";
-import { AppLayout } from "@/components/app-layout";
 import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
@@ -33,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <body className="min-h-screen bg-background font-sans antialiased">
         <ThemeProvider>
-          <AppLayout>{children}</AppLayout>
+          {children}
           <Toaster />
         </ThemeProvider>
       </body>
