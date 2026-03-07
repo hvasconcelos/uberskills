@@ -12,12 +12,47 @@ import { join } from "node:path";
 // ---
 // Constants
 
-const VERSION = "0.9.3"; // Current version of this launcher
+const VERSION = "0.9.4"; // Current version of this launcher
 const REPO_URL = "https://github.com/uberskillsdev/uberskills.git"; // Upstream repository for app code
 const UBERSKILLS_HOME = join(homedir(), ".uberskills"); // Where all binaries, data, etc live
 const APP_DIR = join(UBERSKILLS_HOME, "app"); // Cloned app location
 const VERSION_FILE = join(UBERSKILLS_HOME, ".version"); // File to store installed version
 const PNPM_VERSION = "9.15.4"; // Explicit pnpm version for reproducible installs
+
+// ---
+// Spinner helper -- animated progress indicator for long-running steps
+
+function createSpinner(message) {
+  const frames = ["|", "/", "-", "\\"];
+  let i = 0;
+  const interval = setInterval(() => {
+    process.stdout.write(`\r  ${frames[i++ % frames.length]} ${message}`);
+  }, 80);
+
+  return {
+    update(msg) {
+      message = msg;
+    },
+    stop(msg) {
+      clearInterval(interval);
+      process.stdout.write(`\r  \x1b[32m✓\x1b[0m ${msg}\n`);
+    },
+    fail(msg) {
+      clearInterval(interval);
+      process.stdout.write(`\r  \x1b[31m✗\x1b[0m ${msg}\n`);
+    },
+  };
+}
+
+// Run a command quietly, capturing output. On failure, throw with stderr.
+function runQuiet(cmd, opts = {}) {
+  try {
+    execSync(cmd, { stdio: "pipe", ...opts });
+  } catch (err) {
+    const stderr = err.stderr ? err.stderr.toString().trim() : err.message;
+    throw new Error(stderr);
+  }
+}
 
 // ---
 // Parse CLI arguments from process.argv, supporting --host, --port, --data-dir, etc.
@@ -149,23 +184,35 @@ function ensureInstalled(reset) {
 
   console.log(`\nSetting up uberSKILLS v${VERSION} (first run, this may take a few minutes)...\n`);
 
-  // Clone the correct version of the app
-  run(`git clone --depth 1 --branch v${VERSION} ${REPO_URL} ${APP_DIR}`);
+  function step(label, successMsg, fn) {
+    const spinner = createSpinner(label);
+    try {
+      fn();
+      spinner.stop(successMsg);
+    } catch (err) {
+      spinner.fail(successMsg.replace(/ed$|d$/, " failed"));
+      console.error(`\n${err.message}`);
+      process.exit(1);
+    }
+  }
 
-  // pnpm is managed with corepack so we precisely fix the version regardless of the system
-  console.log("\nEnabling pnpm via corepack...");
-  run("corepack enable", { cwd: APP_DIR });
-  run(`corepack prepare pnpm@${PNPM_VERSION} --activate`, { cwd: APP_DIR });
+  step("Cloning repository...", "Repository cloned", () => {
+    runQuiet(`git clone --depth 1 --branch v${VERSION} ${REPO_URL} ${APP_DIR}`);
+  });
 
-  // Install dependencies (as locked in pnpm-lock.yaml)
-  console.log("\nInstalling dependencies...");
-  run("pnpm install --frozen-lockfile", { cwd: APP_DIR });
+  step("Enabling pnpm via corepack...", "Corepack enabled", () => {
+    runQuiet("corepack enable", { cwd: APP_DIR });
+    runQuiet(`corepack prepare pnpm@${PNPM_VERSION} --activate`, { cwd: APP_DIR });
+  });
 
-  // Run application build step
-  console.log("\nBuilding application...");
-  run("pnpm build", { cwd: APP_DIR });
+  step("Installing dependencies...", "Dependencies installed", () => {
+    runQuiet("pnpm install --frozen-lockfile", { cwd: APP_DIR });
+  });
 
-  // Write version file for caching
+  step("Building application...", "Application built", () => {
+    runQuiet("pnpm build", { cwd: APP_DIR });
+  });
+
   writeFileSync(VERSION_FILE, VERSION, "utf-8");
   console.log("\nSetup complete!\n");
 }
