@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.5] - 2026-03-07
+
+### Changed
+
+- Replaced custom inline spinner with `ora` package for polished animated progress during CLI setup steps
+- Switched from blocking `execSync` to async `spawn`-based command runner so spinner animates during long-running commands
+
+### Fixed
+
+- Used `Number.isNaN` instead of global `isNaN` in CLI port validation
+- Used template literal instead of string concatenation in banner output
+- Removed unused `run()` function
+
 ## [0.9.4] - 2026-03-07
 
 ### Changed
@@ -167,6 +180,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Consistent padding on instructions tab content
 - Tab content max-width adjusted for balanced padding
 
+[0.9.5]: https://github.com/uberskillsdev/uberskills/releases/tag/v0.9.5
 [0.9.4]: https://github.com/uberskillsdev/uberskills/releases/tag/v0.9.4
 [0.9.3]: https://github.com/uberskillsdev/uberskills/releases/tag/v0.9.3
 [0.9.2]: https://github.com/uberskillsdev/uberskills/releases/tag/v0.9.2
