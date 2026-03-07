@@ -8,6 +8,7 @@ import { randomBytes } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
+import ora from "ora";
 
 // ---
 // Constants
@@ -19,39 +20,25 @@ const APP_DIR = join(UBERSKILLS_HOME, "app"); // Cloned app location
 const VERSION_FILE = join(UBERSKILLS_HOME, ".version"); // File to store installed version
 const PNPM_VERSION = "9.15.4"; // Explicit pnpm version for reproducible installs
 
-// ---
-// Spinner helper -- animated progress indicator for long-running steps
-
-function createSpinner(message) {
-  const frames = ["|", "/", "-", "\\"];
-  let i = 0;
-  const interval = setInterval(() => {
-    process.stdout.write(`\r  ${frames[i++ % frames.length]} ${message}`);
-  }, 80);
-
-  return {
-    update(msg) {
-      message = msg;
-    },
-    stop(msg) {
-      clearInterval(interval);
-      process.stdout.write(`\r  \x1b[32m✓\x1b[0m ${msg}\n`);
-    },
-    fail(msg) {
-      clearInterval(interval);
-      process.stdout.write(`\r  \x1b[31m✗\x1b[0m ${msg}\n`);
-    },
-  };
-}
-
-// Run a command quietly, capturing output. On failure, throw with stderr.
+// Run a command asynchronously with suppressed output. Resolves on success, rejects with stderr.
 function runQuiet(cmd, opts = {}) {
-  try {
-    execSync(cmd, { stdio: "pipe", ...opts });
-  } catch (err) {
-    const stderr = err.stderr ? err.stderr.toString().trim() : err.message;
-    throw new Error(stderr);
-  }
+  return new Promise((resolve, reject) => {
+    const child = spawn("sh", ["-c", cmd], { stdio: "pipe", ...opts });
+    let stderr = "";
+    child.stderr.on("data", (chunk) => {
+      stderr += chunk.toString();
+    });
+    child.on("close", (code) => {
+      if (code !== 0) {
+        reject(new Error(stderr.trim() || `Command failed with exit code ${code}`));
+      } else {
+        resolve();
+      }
+    });
+    child.on("error", (err) => {
+      reject(err);
+    });
+  });
 }
 
 // ---
@@ -154,7 +141,7 @@ function checkPrerequisites() {
 
 // If the app is not installed (or is outdated, or --reset), clone and build it.
 // Installs and configures pnpm via corepack as well.
-function ensureInstalled(reset) {
+async function ensureInstalled(reset) {
   // Ensure the main directory exists for caching installs and other files
   mkdirSync(UBERSKILLS_HOME, { recursive: true });
 
@@ -178,34 +165,34 @@ function ensureInstalled(reset) {
 
   console.log(`\nSetting up uberSKILLS v${VERSION} (first run, this may take a few minutes)...\n`);
 
-  function step(label, successMsg, fn) {
-    const spinner = createSpinner(label);
+  async function step(label, successMsg, fn) {
+    const spinner = ora(label).start();
     try {
-      fn();
-      spinner.stop(successMsg);
+      await fn();
+      spinner.succeed(successMsg);
     } catch (err) {
-      spinner.fail(successMsg.replace(/ed$|d$/, " failed"));
+      spinner.fail(label.replace(/\.{3}$/, " failed"));
       console.error(`\n${err.message}`);
       process.exit(1);
     }
   }
 
-  step("Cloning repository...", "Repository cloned", () => {
-    runQuiet(`git clone --depth 1 --branch v${VERSION} ${REPO_URL} ${APP_DIR}`);
+  await step("Cloning repository...", "Repository cloned", () =>
+    runQuiet(`git clone --depth 1 --branch v${VERSION} ${REPO_URL} ${APP_DIR}`),
+  );
+
+  await step("Enabling pnpm via corepack...", "Corepack enabled", async () => {
+    await runQuiet("corepack enable", { cwd: APP_DIR });
+    await runQuiet(`corepack prepare pnpm@${PNPM_VERSION} --activate`, { cwd: APP_DIR });
   });
 
-  step("Enabling pnpm via corepack...", "Corepack enabled", () => {
-    runQuiet("corepack enable", { cwd: APP_DIR });
-    runQuiet(`corepack prepare pnpm@${PNPM_VERSION} --activate`, { cwd: APP_DIR });
-  });
+  await step("Installing dependencies...", "Dependencies installed", () =>
+    runQuiet("pnpm install --frozen-lockfile", { cwd: APP_DIR }),
+  );
 
-  step("Installing dependencies...", "Dependencies installed", () => {
-    runQuiet("pnpm install --frozen-lockfile", { cwd: APP_DIR });
-  });
-
-  step("Building application...", "Application built", () => {
-    runQuiet("pnpm build", { cwd: APP_DIR });
-  });
+  await step("Building application...", "Application built", () =>
+    runQuiet("pnpm build", { cwd: APP_DIR }),
+  );
 
   writeFileSync(VERSION_FILE, VERSION, "utf-8");
   console.log("\nSetup complete!\n");
@@ -311,7 +298,7 @@ if (args.version) {
 }
 
 checkPrerequisites(); // Ensure Node.js and git
-ensureInstalled(args.reset); // Download/build app if needed
+await ensureInstalled(args.reset); // Download/build app if needed
 
 const dataDir = resolveDataDir(args.dataDir); // Find or create data dir
 const encryptionSecret = resolveEncryptionSecret(dataDir); // Find/create encryption secret
