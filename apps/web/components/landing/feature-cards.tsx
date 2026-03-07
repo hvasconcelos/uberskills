@@ -1,7 +1,16 @@
 "use client";
 
 import { Card, CardContent } from "@uberskills/ui";
-import { FileCode2, FlaskConical, GitCompare, Rocket, Share2, Wand2 } from "lucide-react";
+import {
+  FileCode2,
+  FlaskConical,
+  GitCompare,
+  Library,
+  PenLine,
+  Rocket,
+  Share2,
+  Wand2,
+} from "lucide-react";
 import { useInView } from "@/hooks/use-in-view";
 
 const features = [
@@ -41,6 +50,16 @@ const features = [
     description:
       "Built on the SKILL.md format with YAML frontmatter and markdown body. Validated, parsed, and generated automatically.",
   },
+  {
+    icon: Library,
+    title: "Skills Library",
+    description: "Browse, search, filter, and manage all your skills in one place.",
+  },
+  {
+    icon: PenLine,
+    title: "Structured Editor",
+    description: "Edit metadata, instructions, and files with real-time validation and auto-save.",
+  },
 ] as const;
 
 export function FeatureCards() {
@@ -55,7 +74,7 @@ export function FeatureCards() {
         >
           Everything You Need to Build Skills
         </h2>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {features.map((feature, i) => (
             <Card
               key={feature.title}

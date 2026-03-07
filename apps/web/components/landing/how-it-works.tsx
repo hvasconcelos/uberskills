@@ -27,7 +27,7 @@ export function HowItWorks() {
   const { ref, inView } = useInView({ threshold: 0.15 });
 
   return (
-    <section className="py-16 md:py-24" ref={ref}>
+    <section className="py-8 md:py-12" ref={ref}>
       <div className="mx-auto max-w-6xl px-4 md:px-6">
         <h2
           className={`mb-16 text-center text-3xl font-bold tracking-tight ${inView ? "animate-fade-up" : "opacity-0"}`}
