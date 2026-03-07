@@ -164,17 +164,42 @@ return NextResponse.json({ error: "Human-readable message", code: "ERROR_CODE" }
 - Install via `pnpm dlx shadcn@latest add <component>` from the `packages/ui/` directory.
 - Use the `cn()` utility from `@uberskills/ui` for conditional class merging (clsx + tailwind-merge).
 
-### Design System ("Vercel Light" Theme)
+### Brand Identity
 
-- Colors defined as CSS custom properties in `apps/web/styles/globals.css`.
+The uberSKILLS brand uses a minimal, monochromatic palette derived from the logo:
+
+| Token | Hex | Usage |
+|---|---|---|
+| Brand Black | `#171414` | Dark backgrounds, icon/watermark bg, dark mode base |
+| Brand Gray (dark) | `#6A6A6A` | Logo/text on dark backgrounds |
+| Brand Gray (light) | `#B7B7B7` | Logo/text on light backgrounds |
+
+#### Brand Assets (`apps/web/public/`)
+
+| File | Description |
+|---|---|
+| `uberSKILLS_icon.svg` | Square icon — `#171414` bg + `#6A6A6A` U-shaped letterform |
+| `uberSKILLS_icon_dark.svg` | Dark variant (currently identical to icon.svg) |
+| `uberSKILLS_wattermark_black.svg` | Full wordmark — `#171414` bg + `#6A6A6A` pixel-style text |
+| `uberSKILLS_wattermark_white.svg` | Light wordmark — `#FFFFFF` bg + `#B7B7B7` pixel-style text |
+
+- The logo is a **pixel-art / bitmap-style** typeface — all letterforms are built from rectangular path segments (no curves).
+- The icon features a **U-shaped letterform** (the "U" from "uber") centered on a square dark canvas.
+- When adding new brand assets, maintain the monochromatic warm-black + gray palette. Do not introduce saturated accent colors into the logo.
+
+### Design System (Brand Theme)
+
+- Colors defined as CSS custom properties (oklch format) in `apps/web/styles/globals.css`.
 - Light mode tokens on `:root`, dark mode tokens on `.dark`.
+- Dark mode background maps to brand black `#171414` (`oklch(0.15 0.005 20)`) — the warm near-black hue (20°) is intentional and must be preserved.
+- Primary color in dark mode maps to brand gray `#6A6A6A` (`oklch(0.5 0 0)`).
 - Theme switching via `<html class="dark">` (Tailwind class strategy).
 - System preference via `matchMedia("(prefers-color-scheme: dark)")`.
 
 ### Key Design Tokens
 
 - **Cards**: no box-shadow, 1px border, `rounded-lg`.
-- **Buttons**: primary (black bg), secondary (white bg + border), ghost, destructive.
+- **Buttons**: primary (brand black bg in light / brand gray bg in dark), secondary (white bg + border), ghost, destructive.
 - **Badges**: pill shape (`rounded-full`), status-specific colors (draft=gray, ready=green, deployed=blue).
 - **Inputs**: 1px border, `h-10`, `rounded-md`, focus ring.
 - **Navigation**: 64px height (`h-16`), full-width with `max-w-6xl` centered content.
