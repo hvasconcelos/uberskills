@@ -74,17 +74,21 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
-        <Link href="/" className="flex items-center gap-2 px-2 py-3">
+        <Link href="/" className="flex items-center px-2 py-3">
           <Image
-            src="/uberSKILLS_icon.svg"
+            src="/uberSKILLS_wattermark_white.svg"
             alt="uberSKILLS"
-            width={28}
-            height={28}
-            className="shrink-0 rounded"
+            width={120}
+            height={37}
+            className="block dark:hidden"
           />
-          {!isCollapsed && (
-            <span className="truncate text-xl font-bold tracking-tight">uberSKILLS</span>
-          )}
+          <Image
+            src="/uberSKILLS_wattermark_black.svg"
+            alt="uberSKILLS"
+            width={120}
+            height={37}
+            className="hidden dark:block"
+          />
         </Link>
       </SidebarHeader>
 
