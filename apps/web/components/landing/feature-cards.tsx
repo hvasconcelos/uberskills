@@ -1,64 +1,55 @@
 "use client";
 
 import { Card, CardContent } from "@uberskills/ui";
-import {
-  FileCode2,
-  FlaskConical,
-  GitCompare,
-  Library,
-  PenLine,
-  Rocket,
-  Share2,
-  Wand2,
-} from "lucide-react";
 import { useInView } from "@/hooks/use-in-view";
 
 const features = [
   {
-    icon: Wand2,
+    emoji: "\u2728",
     title: "Visual Editor with AI",
     description:
       "Design skills visually or let AI generate them from natural language. Edit metadata, instructions, and file patterns.",
   },
   {
-    icon: FlaskConical,
+    emoji: "\uD83E\uDDEA",
     title: "Multi-Model Sandbox",
     description:
       "Test skills against multiple models with streaming responses. Compare outputs and track test history.",
   },
   {
-    icon: Rocket,
+    emoji: "\uD83D\uDE80",
     title: "One-Click Deploy",
     description:
       "Deploy directly to ~/.claude/skills/ with one click, or export as a zip to share with your team.",
   },
   {
-    icon: Share2,
+    emoji: "\uD83D\uDD00",
     title: "Import & Share",
     description:
       "Import skills from zip files or directories. Export and share with your team or the community.",
   },
   {
-    icon: GitCompare,
+    emoji: "\uD83D\uDD04",
     title: "Version History",
     description:
       "Every edit is tracked. Browse previous versions of your skills and restore any revision.",
   },
   {
-    icon: FileCode2,
+    emoji: "\uD83D\uDCDD",
     title: "SKILL.md Standard",
     description:
       "Built on the SKILL.md format with YAML frontmatter and markdown body. Validated, parsed, and generated automatically.",
   },
   {
-    icon: Library,
+    emoji: "\uD83D\uDCDA",
     title: "Skills Library",
     description: "Browse, search, filter, and manage all your skills in one place.",
   },
   {
-    icon: PenLine,
+    emoji: "\u270F\uFE0F",
     title: "Structured Editor",
-    description: "Edit metadata, instructions, and files with real-time validation and auto-save.",
+    description:
+      "Edit metadata, instructions, and files with real-time validation and auto-save.",
   },
 ] as const;
 
@@ -82,9 +73,9 @@ export function FeatureCards() {
               style={{ animationDelay: `${(i + 1) * 120}ms` }}
             >
               <CardContent className="pt-6">
-                <div className="mb-4 inline-flex rounded-lg bg-muted p-2.5">
-                  <feature.icon className="size-5 text-foreground" aria-hidden="true" />
-                </div>
+                <span className="mb-4 block text-2xl" role="img" aria-hidden="true">
+                  {feature.emoji}
+                </span>
                 <h3 className="mb-2 text-lg font-semibold">{feature.title}</h3>
                 <p className="text-sm leading-relaxed text-muted-foreground">
                   {feature.description}
