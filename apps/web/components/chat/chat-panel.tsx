@@ -47,11 +47,19 @@ export function ChatPanel({
 
   const isStreaming = status === "submitted" || status === "streaming";
 
+  // Track the last assistant message text length to auto-scroll during streaming
+  const lastAssistantText = messages
+    .filter((m) => m.role === "assistant")
+    .at(-1)
+    ?.parts.filter((p): p is Extract<typeof p, { type: "text" }> => p.type === "text")
+    .map((p) => p.text)
+    .join("") ?? "";
+
   useEffect(() => {
     if (messages.length > 0) {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages.length]);
+  }, [messages.length, lastAssistantText.length]);
 
   const handleSubmit = useCallback(async () => {
     const text = input.trim();

@@ -41,16 +41,27 @@ export function SkillPreviewPanel({ messages, isStreaming, onRegenerate }: Skill
   /** Extract SKILL.md content from markdown code blocks if present. */
   const skillMdText = useMemo(() => {
     if (!lastAssistantText) return "";
-    // Match ```md, ```markdown, or plain ``` code blocks containing frontmatter
-    const codeBlockMatch = /```(?:md|markdown)?\s*\n(---[\s\S]*?---[\s\S]*?)```/.exec(
+    // Match ```md, ```markdown, or plain ``` code blocks containing frontmatter.
+    // The second [\s\S]* is greedy so it skips over inner code fences (e.g. code
+    // examples) and backtracks to the *last* closing ``` on its own line.
+    const codeBlockMatch = /```(?:md|markdown)?\s*\n(---[\s\S]*?---[\s\S]*)\n```/.exec(
       lastAssistantText,
     );
     if (codeBlockMatch?.[1]) return codeBlockMatch[1].trim();
     return lastAssistantText;
   }, [lastAssistantText]);
 
+  // Only parse when streaming has finished to avoid partial/broken parses
+  const [stableSkillMdText, setStableSkillMdText] = useState("");
+
+  useEffect(() => {
+    if (!isStreaming && skillMdText) {
+      setStableSkillMdText(skillMdText);
+    }
+  }, [isStreaming, skillMdText]);
+
   const { frontmatter, content, errors, hasFrontmatter } = useMemo(() => {
-    if (!skillMdText) {
+    if (!stableSkillMdText) {
       return {
         frontmatter: { name: "", description: "", trigger: "" },
         content: "",
@@ -59,7 +70,7 @@ export function SkillPreviewPanel({ messages, isStreaming, onRegenerate }: Skill
       };
     }
 
-    const parsed = parseSkillMd(skillMdText);
+    const parsed = parseSkillMd(stableSkillMdText);
     const validation = validateSkill(parsed.frontmatter, parsed.content);
     // Consider frontmatter detected if parser extracted a non-empty name
     const detected = parsed.frontmatter.name.length > 0;
@@ -70,7 +81,7 @@ export function SkillPreviewPanel({ messages, isStreaming, onRegenerate }: Skill
       errors: validation.errors,
       hasFrontmatter: detected,
     };
-  }, [skillMdText]);
+  }, [stableSkillMdText]);
 
   // Auto-fill name from parsed frontmatter when it changes
   useEffect(() => {
@@ -131,6 +142,22 @@ export function SkillPreviewPanel({ messages, isStreaming, onRegenerate }: Skill
       <div className="flex h-full flex-col items-center justify-center p-8 text-center text-muted-foreground">
         <p className="text-sm">Start a conversation to see the preview</p>
         <p className="mt-1 text-xs">The AI-generated SKILL.md will be parsed and displayed here.</p>
+      </div>
+    );
+  }
+
+  if (isStreaming) {
+    return (
+      <div className="flex h-full flex-col">
+        <div className="shrink-0 border-b border-border px-4 py-3">
+          <h2 className="text-sm font-semibold">Preview</h2>
+          <p className="text-xs text-muted-foreground">Generating skill...</p>
+        </div>
+        <div className="flex flex-1 flex-col items-center justify-center gap-3 p-8 text-center text-muted-foreground">
+          <Loader2 className="size-6 animate-spin" />
+          <p className="text-sm">AI is generating your SKILL.md...</p>
+          <p className="text-xs">The preview will appear once generation is complete.</p>
+        </div>
       </div>
     );
   }
