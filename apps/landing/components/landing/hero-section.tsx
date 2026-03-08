@@ -1,8 +1,7 @@
 "use client";
 
 import { Badge, Button } from "@uberskills/ui";
-import { ArrowRightIcon, GithubIcon } from "lucide-react";
-import { EDITOR_URL } from "@/lib/constants";
+import { GithubIcon } from "lucide-react";
 import { InstallCommand } from "./install-command";
 
 export function HeroSection() {
@@ -47,12 +46,6 @@ export function HeroSection() {
         </div>
 
         <div className="animate-fade-up stagger-5 mt-8 flex flex-wrap items-center justify-center gap-4">
-          <Button size="lg" asChild>
-            <a href={EDITOR_URL}>
-              Open Dashboard
-              <ArrowRightIcon className="size-4" aria-hidden="true" />
-            </a>
-          </Button>
           <Button size="lg" variant="outline" asChild>
             <a
               href="https://github.com/uberskillsdev/uberskills"

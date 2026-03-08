@@ -131,7 +131,6 @@ uberskills/
 | `PORT` | No | `3000` | Development server port |
 | `LOG_LEVEL` | No | `info` | Pino log level (`debug`, `info`, `warn`, `error`, `fatal`, `silent`) |
 | `NODE_ENV` | No | `development` | Environment mode |
-| `NEXT_PUBLIC_EDITOR_URL` | No | `/` | Landing app: URL to the editor app for cross-app links |
 
 Set these in `apps/web/.env.local` or `apps/landing/.env.local` (not committed to version control).
 

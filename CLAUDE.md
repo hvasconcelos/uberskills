@@ -38,7 +38,7 @@ uberskills/
 │       ├── app/                # Single-page layout + page
 │       ├── components/landing/ # Landing page sections
 │       ├── hooks/              # useInView hook
-│       ├── lib/                # Constants (EDITOR_URL)
+│       ├── lib/                # Utilities
 │       └── styles/             # Global CSS (imports @uberskills/ui/globals.css)
 ├── packages/
 │   ├── types/                  # @uberskills/types -- shared TypeScript interfaces
@@ -296,7 +296,6 @@ The uberSKILLS brand uses a minimal, monochromatic palette derived from the logo
 | `PORT` | `3000` | Web server port |
 | `LOG_LEVEL` | `info` | Pino log level (`debug`, `info`, `warn`, `error`, `fatal`, `silent`) |
 | `NODE_ENV` | `development` | Environment mode |
-| `NEXT_PUBLIC_EDITOR_URL` | `/` | Landing app: URL to the editor app (cross-app links) |
 
 ## Docker Deployment
 

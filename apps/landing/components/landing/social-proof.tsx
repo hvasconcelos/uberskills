@@ -4,7 +4,7 @@ import { Button } from "@uberskills/ui";
 import { GithubIcon, StarIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useInView } from "@/hooks/use-in-view";
-import { EDITOR_URL } from "@/lib/constants";
+import { InstallCommand } from "./install-command";
 
 export function SocialProof() {
   const [stars, setStars] = useState<number | null>(null);
@@ -37,10 +37,11 @@ export function SocialProof() {
           Open source, free forever. Join the community shaping the future of Agent Skills.
         </p>
 
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-          <Button size="lg" asChild>
-            <a href={EDITOR_URL}>Open Dashboard</a>
-          </Button>
+        <div className="mt-8">
+          <InstallCommand />
+        </div>
+
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
           <Button size="lg" variant="outline" asChild>
             <a
               href="https://github.com/uberskillsdev/uberskills"
