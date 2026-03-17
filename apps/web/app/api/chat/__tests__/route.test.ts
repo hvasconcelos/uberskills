@@ -163,7 +163,7 @@ describe("POST /api/chat", () => {
     // Verify streamText was called with system prompt and messages
     expect(mockedStreamText).toHaveBeenCalledWith(
       expect.objectContaining({
-        system: expect.stringContaining("SKILL.md"),
+        system: expect.stringContaining("JSON code block"),
         messages: expect.arrayContaining([
           expect.objectContaining({ role: "user", content: "Create a React component skill" }),
         ]),
