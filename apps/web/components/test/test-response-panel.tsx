@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 import type { TestMetricsData } from "./test-metrics";
 import { TestMetrics } from "./test-metrics";
@@ -74,7 +75,7 @@ export function TestResponsePanel({
           </div>
         ) : (
           <div className="prose prose-sm max-w-none dark:prose-invert">
-            <Markdown>{streamedText}</Markdown>
+            <Markdown remarkPlugins={[remarkGfm]}>{streamedText}</Markdown>
           </div>
         )}
       </div>
