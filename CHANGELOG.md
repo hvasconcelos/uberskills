@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.10] - 2026-03-17
+
+### Added
+
+- **Landing Page**
+  - "What's New" changelog timeline section showing the latest 3 releases between FAQ and CTA
+
+### Fixed
+
+- Redirected browser URL to new slug after skill rename, preventing 404s and stale data when the name (and therefore slug) changes via auto-save or inline edit
+- Corrected npm package link in landing page footer and JSON-LD structured data to `@uberskillsdev/uberskills`
+
 ## [0.9.9] - 2026-03-17
 
 ### Changed
@@ -18,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Resolved issue where skill name was sometimes missing from AI-generated output, preventing the preview panel from parsing the skill
 - Fixed lint issues in documentation page
+- Updated chat route test to match JSON output system prompt
 
 ## [0.9.8] - 2026-03-13
 
@@ -269,6 +282,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Consistent padding on instructions tab content
 - Tab content max-width adjusted for balanced padding
 
+[0.9.10]: https://github.com/uberskillsdev/uberskills/releases/tag/v0.9.10
 [0.9.9]: https://github.com/uberskillsdev/uberskills/releases/tag/v0.9.9
 [0.9.8]: https://github.com/uberskillsdev/uberskills/releases/tag/v0.9.8
 [0.9.7]: https://github.com/uberskillsdev/uberskills/releases/tag/v0.9.7
